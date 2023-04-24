@@ -4,6 +4,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+
 public class ChessBoard extends GridPane {
     private final int size;
     private final Color lightColor = Color.rgb(255, 206, 158);
