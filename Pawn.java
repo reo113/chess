@@ -1,4 +1,4 @@
-package application;
+package com.example;
 
 import java.util.ArrayList;
 
@@ -14,5 +14,14 @@ public class Pawn extends Piece {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	@Override
+	public String getName(Piece piece) {
+		String color;
+		if(piece.getwhitePiece()){
+			color = "white";
+		}else{
+			color="black";
+		}
+		return color +"Pawn";
+	}
 }
