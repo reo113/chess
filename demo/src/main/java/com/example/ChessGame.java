@@ -9,13 +9,15 @@ import javafx.stage.Stage;
  */
 
 public class ChessGame extends Application {
+  
     public static void main(String[] args) {
         launch(args);
+    
     }
 
     @Override
     public void start(Stage primaryStage) {
-        ChessBoard board = new ChessBoard(8);
+       ChessBoard board = new ChessBoard(8);
         Scene scene = new Scene(board);
         primaryStage.setTitle("Chess Game");
         primaryStage.setScene(scene);
