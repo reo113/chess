@@ -1,7 +1,7 @@
-package application;
+package com.example;
 
 public class Player {
-
+    
     private String name;
     private boolean isBlack;
     //timer
@@ -19,3 +19,4 @@ public class Player {
         return isBlack;
     }
 }
+
