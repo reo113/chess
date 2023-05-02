@@ -10,22 +10,21 @@ public class Spot extends StackPane {
     private Piece piece;
     private Rectangle tile;
     private ImageView imageView;
+    private boolean isSpotOccupied = false;
 
-    public Spot(Piece piece, Rectangle tile) {
+    public Spot(Piece piece, Rectangle tile, boolean isSpotOccupied) {
         this.piece = piece;
         this.tile = tile;
+        this.isSpotOccupied = isSpotOccupied;
     }
 
-    public Spot(Piece piece, Rectangle tile, ImageView imageView) {
+    public Spot(Piece piece, Rectangle tile, ImageView imageView, boolean isSpotOccupied) {
         this.piece = piece;
         this.tile = tile;
         this.imageView = imageView;
-
+        this.isSpotOccupied = isSpotOccupied;
     }
 
-    public Piece getPiece() {
-        return piece;
-    }
 
     public void setPiece(Piece piece) {
         this.piece = piece;
@@ -55,3 +54,4 @@ public class Spot extends StackPane {
 
 
 }
+
