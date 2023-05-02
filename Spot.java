@@ -51,7 +51,13 @@ public class Spot extends StackPane {
     public double getTileY() {
         return tile.getY();
     }
+    
+    public boolean getIsSpotOccupied() {
+		return isSpotOccupied;
+	}
 
-
+	public void setIsSpotOccupied(boolean isSpotOccupied) {
+		this.isSpotOccupied = isSpotOccupied;
+	}
 }
 
