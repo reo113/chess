@@ -30,61 +30,68 @@ public class ChessBoard extends GridPane{
                 // alternates the color of the tiles
                 tile.setFill((i + j) % 2 == 0 ? lightColor : darkColor);
                 Piece piece = null;
-                if (j == 0 || j == 7) {
-                    switch (i) {
+               boolean isSpotOccupied = false;
+                if (i == 0 || i == 7) {
+                    switch (j) {
                         case 0:
                         case 7:
-                        if((i + j) % 2 == 0 ){
-                             bool = true;
+                        if(i < 2 ){
+                             bool = false;
                         }else{
-                             bool =false;
+                             bool =true;
                         }
                             piece = new Rook(false, bool);
+                            isSpotOccupied = true;
                             break;
                         case 1:
                         case 6:
-                        if((i + j) % 2 == 0 ){
-                            bool = true;
+                        if(i <2 ){
+                            bool = false;
                        }else{
-                            bool =false;
+                            bool =true;
                        }
                             piece = new Knight(false, bool);
+                            isSpotOccupied = true;
                             break;
                         case 2:
                         case 5:
-                        if((i + j) % 2 == 0 ){
-                            bool = true;
+                        if(i < 2 ){
+                            bool = false;
                        }else{
-                            bool =false;
+                            bool =true;
                        }
                             piece = new Bishop(false, bool);
+                            isSpotOccupied = true;
                             break;
                         case 3:
-                        if((i + j) % 2 == 0 ){
-                            bool = true;
+                        if(i < 2 ){
+                            bool = false;
                        }else{
-                            bool =false;
+                            bool =true;
                        }
                             piece = new Queen(false, bool);
+                            isSpotOccupied = true;
                             break;
                         case 4:
-                            if((i + j) % 2 == 0 ){
-                                bool = true;
+                            if( i < 2 ){
+                                bool = false;
                             }else{
-                            bool =false;
+                            bool =true;
                             }
                             piece = new King(false, bool);
+                            isSpotOccupied = true;
                             break;
                     }
-                } else if (j == 1 || j == 6) {
-                    if((i + j) % 2 == 0 ){
-                        bool = true;
+                } else if (i == 1 || i == 6) {
+                    if(i < 2){
+                        bool = false;
                    }else{
-                        bool =false;
+                        bool =true;
                    }
                     piece = new Pawn(false, bool);
+                    isSpotOccupied = true;
                 }
-                Spot spot = new Spot(piece, tile);
+                Spot spot = new Spot(piece, tile,isSpotOccupied);
                 spots[i][j] = spot;
                 this.add(tile, j, i);
                 
