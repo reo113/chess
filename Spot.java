@@ -13,97 +13,20 @@ public class Spot extends StackPane {
     private boolean isSpotOccupied;
     private ImageView imageView;
     private boolean correctTurn; //change to a player object
+	 protected Piece pieceBeingDragged;
+    protected ImageView imageViewBeingDragged;
+    private double deltaX ;
+    private double deltaY ;
+    private Spot[][] spots = new Spot[8][8];
     //private Player player
     //player.getCorrectTurn == true;
 
     public Spot(Piece piece, Rectangle tile, boolean isSpotOccupied) {
-        this.piece = piece;
-        this.tile = tile;
-        this.isSpotOccupied = isSpotOccupied;
-        
-        
-        setOnMousePressed(e -> {
-        	// only if the spot is empty will the mouse press be handled
-        	if(isSpotOccupied == false) {
-        		// save the current position of the piece in case the move is not valid
-        		setCursor(Cursor.CLOSED_HAND);
-        	}
-        });
-        
-        setOnMouseDragged(e -> {
-        	// only if the spot is empty will the mouse drag be handled
-        	if(isSpotOccupied == false) {
-        		// update the coordinates to the new coordinates of where the piece was moved with mouse
-        	}
-        });
-        setOnMouseReleased(e -> {
-        	// only if the spot is empty and it is the correct player turn will the mouse release be handled 
-        	if(isSpotOccupied == false && correctTurn == true) {
-        		// remove the piece from the current spot and move it to the new spot
-        		// change the isSpotOccupied to false for the old spot and true for the new spot
-        		// put the piece at the center of the new spot
-        	 	setCursor(Cursor.DEFAULT);
-        	}
-        });
-        
-    	// Make sure that the piece can only be moved if it's the correct person's turn
-    	// save the current position of the piece in case the move is not valid
-        // if the move is not valid move the piece back to the current coordinates
-    	// Make sure the spot is empty (same piece color) 
-    	// put the piece at the center of the new spot
-    	// move the piece to the new coordinates of where the mouse released the piece
-        // check to see if the piece is being moved to a spot with a enemy piece
-        // if so remove the enemy piece from the spot
-        // And if the mouse releases the piece out of bounds return the piece to the current position
-    }
-
-    public Spot(Piece piece, Rectangle tile, ImageView imageView, boolean isSpotOccupied) {
-        this.piece = piece;
-        this.tile = tile;
-        this.imageView = imageView;
-        this.isSpotOccupied = isSpotOccupied;
-    }
-
-    public Piece getPiece() {
-        return piece;
-    }
-
-    public void setPiece(Piece piece) {
-        this.piece = piece;
-    
-    }
-
-    public Rectangle getTile() {
-        return tile;
-    }
-
-    public void getTileColor() {
-        Color color = (Color) tile.getFill();
-        System.out.println("Rectangle color: " + color.toString()); 
-    }
-
-    public void setTile(Rectangle tile) {
-        this.tile = tile;
-    }
-
-    public double getTileX() {
-        return tile.getX();
-    }
-
-    public double getTileY() {
-        return tile.getY();
-    }
-
-	public boolean getisSpotOccupied() {
-		return isSpotOccupied;
-	}
-
-	public void setisSpotOccupied(boolean isSpotOccupied) {
-		this.isSpotOccupied = isSpotOccupied;
-	} this.piece = piece;
+       this.piece = piece;
         this.tile = tile;
         this.imageView = null;
         this.isSpotOccupied = isSpotOccupied;
+	    
         setOnMousePressed(e -> {
             // only if the spot is empty will the mouse press be handled
             if (isSpotOccupied) {
@@ -158,6 +81,51 @@ public class Spot extends StackPane {
         
         });
     }
+
+    public Spot(Piece piece, Rectangle tile, ImageView imageView, boolean isSpotOccupied) {
+        this.piece = piece;
+        this.tile = tile;
+        this.imageView = imageView;
+        this.isSpotOccupied = isSpotOccupied;
+    }
+
+    public Piece getPiece() {
+        return piece;
+    }
+
+    public void setPiece(Piece piece) {
+        this.piece = piece;
+    
+    }
+
+    public Rectangle getTile() {
+        return tile;
+    }
+
+    public void getTileColor() {
+        Color color = (Color) tile.getFill();
+        System.out.println("Rectangle color: " + color.toString()); 
+    }
+
+    public void setTile(Rectangle tile) {
+        this.tile = tile;
+    }
+
+    public double getTileX() {
+        return tile.getX();
+    }
+
+    public double getTileY() {
+        return tile.getY();
+    }
+
+	public boolean getisSpotOccupied() {
+		return isSpotOccupied;
+	}
+
+	public void setisSpotOccupied(boolean isSpotOccupied) {
+		this.isSpotOccupied = isSpotOccupied;
+	} 
 
     public Spot(Piece piece, Rectangle tile, ImageView imageView, boolean isSpotOccupied) {
         this.piece = piece;
