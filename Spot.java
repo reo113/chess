@@ -82,50 +82,7 @@ public class Spot extends StackPane {
         });
     }
 
-    public Spot(Piece piece, Rectangle tile, ImageView imageView, boolean isSpotOccupied) {
-        this.piece = piece;
-        this.tile = tile;
-        this.imageView = imageView;
-        this.isSpotOccupied = isSpotOccupied;
-    }
-
-    public Piece getPiece() {
-        return piece;
-    }
-
-    public void setPiece(Piece piece) {
-        this.piece = piece;
-    
-    }
-
-    public Rectangle getTile() {
-        return tile;
-    }
-
-    public void getTileColor() {
-        Color color = (Color) tile.getFill();
-        System.out.println("Rectangle color: " + color.toString()); 
-    }
-
-    public void setTile(Rectangle tile) {
-        this.tile = tile;
-    }
-
-    public double getTileX() {
-        return tile.getX();
-    }
-
-    public double getTileY() {
-        return tile.getY();
-    }
-
-	public boolean getisSpotOccupied() {
-		return isSpotOccupied;
-	}
-
-	public void setisSpotOccupied(boolean isSpotOccupied) {
-		this.isSpotOccupied = isSpotOccupied;
-	} 
+  
 
     public Spot(Piece piece, Rectangle tile, ImageView imageView, boolean isSpotOccupied) {
         this.piece = piece;
