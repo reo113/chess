@@ -6,7 +6,7 @@ public class Pawn extends Piece {
 
 	Pawn(Boolean isKilled, Boolean whitePiece) {
 		super(isKilled, whitePiece);
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	@Override

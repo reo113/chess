@@ -22,6 +22,8 @@ public class ChessGame extends Application {
         primaryStage.setTitle("Chess Game");
         primaryStage.setScene(scene);
         primaryStage.show();
+        
     }
-
+    
+    
 }
