@@ -43,35 +43,75 @@ public class Spot extends StackPane {
                 imageViewBeingDragged.setTranslateY(Y);
             }
         });
-
         setOnMouseReleased(event -> {
             if (pieceBeingDragged != null) {
+                Spot sourceSpot = (Spot) imageViewBeingDragged.getParent();
+
+                // Find the destination spot
                 Spot destinationSpot = null;
-                if (this.contains(X, Y)) {
+                if (this.contains(X, Y) && !isSpotOccupied) {
                     destinationSpot = this;
-
                 }
-                if (destinationSpot != null) {
-                    // Move the Piece object to the destination Spot
-                    ImageView currentPiece = destinationSpot.getImageView();
+                if (destinationSpot != null && destinationSpot.isSpotOccupied() == false) {
+                    // Move the piece to the destination spot
                     destinationSpot.setPiece(pieceBeingDragged);
-                    destinationSpot.getChildren().add(imageViewBeingDragged); // Add the ImageView to the new Spot
+                    destinationSpot.getChildren().add(imageViewBeingDragged);
+                    sourceSpot.removePiece();
                     pieceBeingDragged = null;
-                    if (currentPiece != null) {
-                        // capturedPieces.add(currentPiece); // Add the captured piece to a list
-                        destinationSpot.getChildren().remove(currentPiece); // Remove the ImageView of the captured
-                                                                            // Piece from the board
-                    }
-                } else {
-
-                    imageViewBeingDragged.setTranslateX(X);
-                    imageViewBeingDragged.setTranslateY(Y);
+                } else if (destinationSpot != null && destinationSpot.isSpotOccupied() == true) {
+                    ImageView capturedPieceImageView = destinationSpot.getImageView();
+                    destinationSpot.removeImageView();
+                    getChildren().remove(capturedPieceImageView);
+                    
+                }else{
+                    // Move the piece back to the source spot
+                    imageViewBeingDragged.setTranslateX(0);
+                    imageViewBeingDragged.setTranslateY(0);
                 }
+
+              
+
                 setCursor(Cursor.DEFAULT);
             }
-
         });
+        // setOnMouseReleased(event -> {
+        // if (pieceBeingDragged != null) {
+        // Spot destinationSpot = null;
+        // if (this.contains(X, Y) && !isSpotOccupied) {
+        // destinationSpot = this;
 
+        // }
+        // if (destinationSpot != null) {
+        // // Move the Piece object to the destination Spot
+        // ImageView currentPiece = destinationSpot.getImageView();
+        // destinationSpot.setPiece(pieceBeingDragged);
+        // destinationSpot.getChildren().add(imageViewBeingDragged); // Add the
+        // ImageView to the new Spot
+        // pieceBeingDragged = null;
+        // if (currentPiece != null) {
+        // getChildren().remove(currentPiece); // Remove the ImageView of the captured
+        // // Piece from the board
+        // }
+        // } else {
+
+        // imageViewBeingDragged.setTranslateX(X);
+        // imageViewBeingDragged.setTranslateY(Y);
+        // }
+        // setCursor(Cursor.DEFAULT);
+        // }
+
+        // });
+
+    }
+
+
+    private void removePiece() {
+        this.piece = null;
+    }
+
+
+    private void removeImageView() {
+        this.imageView = null;
     }
 
     public Spot(Piece piece, Rectangle tile, ImageView imageView, boolean isSpotOccupied) {

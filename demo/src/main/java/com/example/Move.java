@@ -2,8 +2,8 @@ package com.example;
 
 public interface Move {
   
-    public boolean isValidMove(int startX, int startY, int endX, int endY);
-    public void makeMove(int startX, int startY, int endX, int endY);
-    public void undoMove(int startX, int startY, int endX, int endY);
+    public boolean isValidMove(Spot currentSpot, Spot destinationSpot);
+    public void makeMove(Spot currentSpot, Spot destinationSpot);
+    public void undoMove(Spot currentSpot, Spot destinationSpot);
     
 }
