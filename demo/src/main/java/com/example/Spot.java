@@ -15,8 +15,9 @@ public class Spot extends StackPane {
     private boolean isSpotOccupied;
     protected Piece pieceBeingDragged;
     protected ImageView imageViewBeingDragged;
-    double X ;
-    double Y ;
+    double X;
+    double Y;
+
     public Spot(Piece piece, Rectangle tile, boolean isSpotOccupied) {
         this.piece = piece;
         this.tile = tile;
@@ -36,8 +37,8 @@ public class Spot extends StackPane {
 
         setOnMouseDragged(event -> {
             if (pieceBeingDragged != null) {
-                X = event.getX()-18;
-                Y = event.getY()-18;
+                X = event.getX() - 18;
+                Y = event.getY() - 18;
                 imageViewBeingDragged.setTranslateX(X);
                 imageViewBeingDragged.setTranslateY(Y);
             }
@@ -46,14 +47,9 @@ public class Spot extends StackPane {
         setOnMouseReleased(event -> {
             if (pieceBeingDragged != null) {
                 Spot destinationSpot = null;
-                for (int row = 0; row < 8; row++) {
-                    for (int col = 0; col < 8; col++) {
+                if (this.contains(X, Y)) {
+                    destinationSpot = this;
 
-                        if (this.contains(X, Y)) {
-                            destinationSpot = this;
-                            break;
-                        }
-                    }
                 }
                 if (destinationSpot != null) {
                     // Move the Piece object to the destination Spot
@@ -63,16 +59,17 @@ public class Spot extends StackPane {
                     pieceBeingDragged = null;
                     if (currentPiece != null) {
                         // capturedPieces.add(currentPiece); // Add the captured piece to a list
-                        destinationSpot.getChildren().remove(currentPiece); // Remove the ImageView of the captured Piece from the board
+                        destinationSpot.getChildren().remove(currentPiece); // Remove the ImageView of the captured
+                                                                            // Piece from the board
                     }
                 } else {
-                    
+
                     imageViewBeingDragged.setTranslateX(X);
                     imageViewBeingDragged.setTranslateY(Y);
                 }
                 setCursor(Cursor.DEFAULT);
             }
-        
+
         });
 
     }
