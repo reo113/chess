@@ -14,8 +14,8 @@ public class ChessBoard extends GridPane {
     private final Color lightColor = Color.rgb(255, 206, 158);
     private final Color darkColor = Color.rgb(209, 139, 71);
     boolean bool = false;
-    private Spot[][] spots = new Spot[8][8];
-    static final String IMAGE_PATH = "demo\\src\\main\\java\\com\\example\\images";
+    private static final Spot[][] spots = new Spot[8][8];
+    final String IMAGE_PATH = "demo\\src\\main\\java\\com\\example\\images";
 
     public ChessBoard(int size) {
 
@@ -92,7 +92,7 @@ public class ChessBoard extends GridPane {
                 }
                 this.add(tile, j, i);
                 Spot spot = new Spot(piece, tile, isSpotOccupied);
-           
+
                 // Load the chess piece image
                 if (piece != null && piece.getName(piece) != null) {
                     String imagePath = IMAGE_PATH + "\\" + piece.getName(piece) + ".png";

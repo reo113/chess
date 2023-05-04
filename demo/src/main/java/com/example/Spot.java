@@ -28,6 +28,7 @@ public class Spot extends StackPane {
                 // save the current position of the piece in case the move is not valid
                 pieceBeingDragged = piece;
                 imageViewBeingDragged = imageView;
+                toFront();
                 setCursor(Cursor.CLOSED_HAND);
             }
         });
