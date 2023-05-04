@@ -15,7 +15,7 @@ public class ChessBoard extends GridPane {
     private final Color darkColor = Color.rgb(209, 139, 71);
     boolean bool = false;
     private static final Spot[][] spots = new Spot[8][8];
-    final String IMAGE_PATH = "demo\\src\\main\\java\\com\\example\\images";
+    final static String IMAGE_PATH = "demo\\src\\main\\java\\com\\example\\images";
 
     public ChessBoard(int size) {
 
