@@ -15,7 +15,8 @@ public class Spot extends StackPane {
     private boolean isSpotOccupied;
     protected Piece pieceBeingDragged;
     protected ImageView imageViewBeingDragged;
-
+    double X ;
+    double Y ;
     public Spot(Piece piece, Rectangle tile, boolean isSpotOccupied) {
         this.piece = piece;
         this.tile = tile;
@@ -35,10 +36,10 @@ public class Spot extends StackPane {
 
         setOnMouseDragged(event -> {
             if (pieceBeingDragged != null) {
-                double mouseX = event.getSceneX();
-                double mouseY = event.getSceneY();
-                imageViewBeingDragged.setTranslateX(mouseX);
-                imageViewBeingDragged.setTranslateY(mouseY);
+                X = event.getX()-18;
+                Y = event.getY()-18;
+                imageViewBeingDragged.setTranslateX(X);
+                imageViewBeingDragged.setTranslateY(Y);
             }
         });
 
@@ -48,7 +49,7 @@ public class Spot extends StackPane {
                 for (int row = 0; row < 8; row++) {
                     for (int col = 0; col < 8; col++) {
 
-                        if (this.getBoundsInParent().contains(event.getX(), event.getY())) {
+                        if (this.contains(X, Y)) {
                             destinationSpot = this;
                             break;
                         }
@@ -65,10 +66,9 @@ public class Spot extends StackPane {
                         destinationSpot.getChildren().remove(currentPiece); // Remove the ImageView of the captured Piece from the board
                     }
                 } else {
-                    double originalX = this.getTileX();
-                    double originalY = this.getTileY();
-                    imageViewBeingDragged.setTranslateX(originalX);
-                    imageViewBeingDragged.setTranslateY(originalY);
+                    
+                    imageViewBeingDragged.setTranslateX(X);
+                    imageViewBeingDragged.setTranslateY(Y);
                 }
                 setCursor(Cursor.DEFAULT);
             }
