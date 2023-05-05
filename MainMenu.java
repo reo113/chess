@@ -24,6 +24,10 @@ public class MainMenu extends VBox {
         setPrefSize(500, 500); // Set size of the VBox
 
         // Add background image
+	//String imagePath = "demo\\src\\main\\java\\com\\example\\chessbg.jpg";
+        //File imageFile = new File(imagePath);
+        //Image image = new Image(imageFile.toURI().toString());
+        //ImageView imageView = new ImageView(image);
         ImageView imageView = new ImageView(new Image("chessbg.jpg"));
 
         startButton.setFont(Font.font("Arial", FontWeight.BOLD, 24));
