@@ -1,88 +1,119 @@
 package application;
 
+
 import javafx.scene.Cursor;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 public class Spot extends StackPane {
 
     private Piece piece;
     private Rectangle tile;
-    private boolean isSpotOccupied;
     private ImageView imageView;
-    private boolean correctTurn; //change to a player object
-	 protected Piece pieceBeingDragged;
+    private boolean isSpotOccupied;
+    protected Piece pieceBeingDragged;
     protected ImageView imageViewBeingDragged;
-    private double deltaX ;
-    private double deltaY ;
-    private Spot[][] spots = new Spot[8][8];
-    //private Player player
-    //player.getCorrectTurn == true;
+    double X;
+    double Y;
 
     public Spot(Piece piece, Rectangle tile, boolean isSpotOccupied) {
-       this.piece = piece;
+        this.piece = piece;
         this.tile = tile;
         this.imageView = null;
         this.isSpotOccupied = isSpotOccupied;
-	    
+
         setOnMousePressed(e -> {
             // only if the spot is empty will the mouse press be handled
             if (isSpotOccupied) {
                 // save the current position of the piece in case the move is not valid
-
-                pieceBeingDragged = this.piece;
-                imageViewBeingDragged = this.imageView;
+                pieceBeingDragged = piece;
+                imageViewBeingDragged = imageView;
+                toFront();
                 setCursor(Cursor.CLOSED_HAND);
             }
         });
 
-        setOnMouseDragged(e -> {
+        setOnMouseDragged(event -> {
             if (pieceBeingDragged != null) {
-                double mouseX = e.getSceneX();
-                double mouseY = e.getSceneY();
-                imageViewBeingDragged.setTranslateX(mouseX);
-                imageViewBeingDragged.setTranslateY(mouseY);
-               
+                X = event.getX() - 18;
+                Y = event.getY() - 18;
+                imageViewBeingDragged.setTranslateX(X);
+                imageViewBeingDragged.setTranslateY(Y);
             }
         });
-
-        setOnMouseReleased(e -> {
+        setOnMouseReleased(event -> {
             if (pieceBeingDragged != null) {
-                Spot destinationSpot = null;
-                for (int row = 0; row < 8; row++) {
-                    for (int col = 0; col < 8; col++) {
+                Spot sourceSpot = (Spot) imageViewBeingDragged.getParent();
 
-                        if (this.getBoundsInParent().contains(e.getSceneX(), e.getSceneY())) {
-                            destinationSpot = this;
-                            break;
-                        }
-                    }
+                // Find the destination spot
+                Spot destinationSpot = null;
+                if (this.contains(X, Y) && !isSpotOccupied) {
+                    destinationSpot = this;
                 }
-                if (destinationSpot != null) {
-                    // Move the Piece object to the destination Spot
-                    ImageView currentPiece = destinationSpot.getImageView();
+                if (destinationSpot != null && destinationSpot.isSpotOccupied() == false) {
+                    // Move the piece to the destination spot
                     destinationSpot.setPiece(pieceBeingDragged);
-                    destinationSpot.getChildren().add(imageViewBeingDragged); // Add the ImageView to the new Spot
+                    destinationSpot.getChildren().add(imageViewBeingDragged);
+                    sourceSpot.removePiece();
                     pieceBeingDragged = null;
-                    if (currentPiece != null) {
-                        // capturedPieces.add(currentPiece); // Add the captured piece to a list
-                        destinationSpot.getChildren().remove(currentPiece); // Remove the ImageView of the captured Piece from the board
-                    }
-                } else {
-                    double originalX = this.getTileX();
-                    double originalY = this.getTileY();
-                    imageViewBeingDragged.setTranslateX(originalX);
-                    imageViewBeingDragged.setTranslateY(originalY);
+                } else if (destinationSpot != null && destinationSpot.isSpotOccupied() == true) {
+                    ImageView capturedPieceImageView = destinationSpot.getImageView();
+                    destinationSpot.removeImageView();
+                    getChildren().remove(capturedPieceImageView);
+                    
+                }else{
+                    // Move the piece back to the source spot
+                    imageViewBeingDragged.setTranslateX(0);
+                    imageViewBeingDragged.setTranslateY(0);
                 }
+
+              
+
                 setCursor(Cursor.DEFAULT);
             }
-        
         });
+        // setOnMouseReleased(event -> {
+        // if (pieceBeingDragged != null) {
+        // Spot destinationSpot = null;
+        // if (this.contains(X, Y) && !isSpotOccupied) {
+        // destinationSpot = this;
+
+        // }
+        // if (destinationSpot != null) {
+        // // Move the Piece object to the destination Spot
+        // ImageView currentPiece = destinationSpot.getImageView();
+        // destinationSpot.setPiece(pieceBeingDragged);
+        // destinationSpot.getChildren().add(imageViewBeingDragged); // Add the
+        // ImageView to the new Spot
+        // pieceBeingDragged = null;
+        // if (currentPiece != null) {
+        // getChildren().remove(currentPiece); // Remove the ImageView of the captured
+        // // Piece from the board
+        // }
+        // } else {
+
+        // imageViewBeingDragged.setTranslateX(X);
+        // imageViewBeingDragged.setTranslateY(Y);
+        // }
+        // setCursor(Cursor.DEFAULT);
+        // }
+
+        // });
+
     }
 
-  
+
+    private void removePiece() {
+        this.piece = null;
+    }
+
+
+    private void removeImageView() {
+        this.imageView = null;
+    }
 
     public Spot(Piece piece, Rectangle tile, ImageView imageView, boolean isSpotOccupied) {
         this.piece = piece;
@@ -98,9 +129,14 @@ public class Spot extends StackPane {
     public void setImageView(ImageView imageView) {
         this.imageView = imageView;
     }
+
+    public Piece getPiece() {
+        return piece;
+    }
+
     public void setPiece(Piece piece) {
         this.piece = piece;
-    
+
     }
 
     public Rectangle getTile() {
@@ -109,7 +145,11 @@ public class Spot extends StackPane {
 
     public void getTileColor() {
         Color color = (Color) tile.getFill();
-        System.out.println("Rectangle color: " + color.toString()); 
+        System.out.println("Rectangle color: " + color.toString());
+    }
+
+    public Paint getColor() {
+        return tile.getFill();
     }
 
     public void setTile(Rectangle tile) {
@@ -123,16 +163,8 @@ public class Spot extends StackPane {
     public double getTileY() {
         return tile.getY();
     }
-    public Paint getColor() {
-        return tile.getFill();
-    }
+
     public boolean isSpotOccupied() {
         return isSpotOccupied;
     }
-    public void setArr(Spot[][] spots){
-        this.spots =spots;
-    }
-}
-
-	
 }
