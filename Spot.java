@@ -75,35 +75,7 @@ public class Spot extends StackPane {
                 setCursor(Cursor.DEFAULT);
             }
         });
-        // setOnMouseReleased(event -> {
-        // if (pieceBeingDragged != null) {
-        // Spot destinationSpot = null;
-        // if (this.contains(X, Y) && !isSpotOccupied) {
-        // destinationSpot = this;
-
-        // }
-        // if (destinationSpot != null) {
-        // // Move the Piece object to the destination Spot
-        // ImageView currentPiece = destinationSpot.getImageView();
-        // destinationSpot.setPiece(pieceBeingDragged);
-        // destinationSpot.getChildren().add(imageViewBeingDragged); // Add the
-        // ImageView to the new Spot
-        // pieceBeingDragged = null;
-        // if (currentPiece != null) {
-        // getChildren().remove(currentPiece); // Remove the ImageView of the captured
-        // // Piece from the board
-        // }
-        // } else {
-
-        // imageViewBeingDragged.setTranslateX(X);
-        // imageViewBeingDragged.setTranslateY(Y);
-        // }
-        // setCursor(Cursor.DEFAULT);
-        // }
-
-        // });
-
-    }
+       
 
 
     private void removePiece() {
