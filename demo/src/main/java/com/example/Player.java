@@ -8,12 +8,11 @@ public class Player {
         this.name = name;
         this.pieceColor = pieceColor;
     }
-    
+
     public enum PieceColor {
         WHITE,
         BLACK
     }
-
 
     public String getName() {
         return name;
@@ -22,7 +21,9 @@ public class Player {
     public PieceColor getPieceColor() {
         return pieceColor;
     }
-
+    public void settPieceColor(PieceColor pieceColor) {
+        this.pieceColor =pieceColor;
+    }
     public boolean isWhite() {
         return pieceColor == PieceColor.WHITE;
     }
@@ -30,5 +31,6 @@ public class Player {
     public boolean isBlack() {
         return pieceColor == PieceColor.BLACK;
     }
-}
 
+   
+}

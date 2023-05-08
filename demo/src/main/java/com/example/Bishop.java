@@ -1,17 +1,14 @@
 package com.example;
+
 import java.util.ArrayList;
 
 import com.example.Player.PieceColor;
 
-import javafx.scene.image.ImageView;
-
 public class Bishop extends Piece {
-
-
 
 	Bishop(PieceColor isWhite) {
 		super(isWhite);
-	
+
 	}
 
 	@Override
@@ -25,6 +22,5 @@ public class Bishop extends Piece {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Unimplemented method 'canMove'");
 	}
-
 
 }

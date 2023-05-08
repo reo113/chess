@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.example.Player.PieceColor;
 
-import javafx.scene.image.ImageView;
 
 public class Knight extends Piece {
 

@@ -2,6 +2,8 @@ package com.example;
 
 import java.util.ArrayList;
 
+import com.example.Player.PieceColor;
+
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.image.ImageView;
@@ -25,6 +27,15 @@ public class Spot extends StackPane {
     private double Y;
     private ChessBoard board;
 
+    public boolean canGo(PieceColor color, Piece piece) {
+        if (color == piece.getColor()) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
     public Spot(Piece piece, Rectangle tile, boolean isSpotOccupied, ChessBoard board) {
         this.piece = piece;
         this.tile = tile;
@@ -33,6 +44,7 @@ public class Spot extends StackPane {
         this.board = board;
 
         setOnMousePressed(e -> {
+    
             board.resetHighlights(); // Reset highlights on the board
             if (isSpotOccupied) {
                 ArrayList<Move> legalMoves = piece.legalMoves(board, this);
@@ -44,7 +56,7 @@ public class Spot extends StackPane {
                 imageViewBeingDragged = imageView;
 
                 this.toFront();
-                //this.setCursor(Cursor.CLOSED_HAND);
+                this.setCursor(Cursor.CLOSED_HAND);
 
             }
         });
@@ -59,6 +71,7 @@ public class Spot extends StackPane {
             }
         });
         setOnMouseReleased(event -> {
+
             board.resetHighlights();
             if (pieceBeingDragged != null) {
                 imageViewBeingDragged.setTranslateX(0);
@@ -73,7 +86,9 @@ public class Spot extends StackPane {
                 Spot destinationSpot = board.getSpot(newRow, newCol);
 
                 if (destinationSpot != null && pieceBeingDragged.canMove(board, this, destinationSpot)) {
-
+                    if (pieceBeingDragged instanceof Pawn) {
+                        ((Pawn) pieceBeingDragged).setFirstMove(false);
+                    }
                     if (destinationSpot.isSpotOccupied()) {
                         ImageView capturedPieceImageView = destinationSpot.getImageView();
                         destinationSpot.removeImageView();
@@ -92,11 +107,10 @@ public class Spot extends StackPane {
                     destinationSpot.setImageView(imageViewBeingDragged);
                     destinationSpot.setIsSpotOccupied(true);
                     destinationSpot.updateEventListeners();
-                 
 
                     board.setSpot(newRow, newCol, destinationSpot);
                     board.setSpot(this.getRow(), this.getColumn(), this);
-
+                 
                 }
 
                 // Reset the pieceBeingDragged
@@ -109,14 +123,18 @@ public class Spot extends StackPane {
 
     }
 
-    void removePiece() {
+    public ChessBoard getBoard() {
+        return board;
+    }
+
+    public void removePiece() {
 
         piece = null; // set the piece reference to null
         setIsSpotOccupied(false);
 
     }
 
-    private void removeImageView() {
+    public void removeImageView() {
 
         imageView = null; // set the piece reference to null
 
@@ -137,14 +155,7 @@ public class Spot extends StackPane {
     public void setPiece(Piece piece) {
         this.piece = piece;
         setIsSpotOccupied(piece != null);
-        // this.piece = piece;
-        // if (piece != null) {
 
-        //     System.out.println("Piece added to spot " + this.getRow() + ", " + this.getColumn());
-        // } else {
-        //     this.setIsSpotOccupied(false);
-        //     System.out.println("Piece removed from spot " + this.getRow() + ", " + this.getColumn());
-        // }
     }
 
     public Rectangle getTile() {
@@ -191,7 +202,9 @@ public class Spot extends StackPane {
     }
 
     public void updateEventListeners() {
+
         setOnMousePressed(e -> {
+          
             board.resetHighlights(); // Reset highlights on the board
             if (isSpotOccupied) {
                 ArrayList<Move> legalMoves = piece.legalMoves(board, this);
@@ -203,7 +216,7 @@ public class Spot extends StackPane {
                 imageViewBeingDragged = imageView;
 
                 this.toFront();
-                //this.setCursor(Cursor.CLOSED_HAND);
+                this.setCursor(Cursor.CLOSED_HAND);
 
             }
         });
@@ -254,8 +267,9 @@ public class Spot extends StackPane {
 
                     board.setSpot(newRow, newCol, destinationSpot);
                     board.setSpot(this.getRow(), this.getColumn(), this);
-
+                    
                 }
+                
 
                 // Reset the pieceBeingDragged
                 pieceBeingDragged = null;
@@ -264,5 +278,4 @@ public class Spot extends StackPane {
 
             }
         });
-    }
-}
+}}
