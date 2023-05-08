@@ -1,22 +1,34 @@
 package com.example;
 
 public class Player {
-    
     private String name;
-    private boolean isBlack;
-    //timer
+    private PieceColor pieceColor;
 
-    public Player(String name, boolean isBlack) {
+    public Player(String name, PieceColor pieceColor) {
         this.name = name;
-        this.isBlack = isBlack;
+        this.pieceColor = pieceColor;
     }
+    
+    public enum PieceColor {
+        WHITE,
+        BLACK
+    }
+
 
     public String getName() {
         return name;
     }
 
+    public PieceColor getPieceColor() {
+        return pieceColor;
+    }
+
+    public boolean isWhite() {
+        return pieceColor == PieceColor.WHITE;
+    }
+
     public boolean isBlack() {
-        return isBlack;
+        return pieceColor == PieceColor.BLACK;
     }
 }
 

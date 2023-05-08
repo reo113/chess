@@ -2,11 +2,17 @@ package com.example;
 
 import java.util.ArrayList;
 
+import com.example.Player.PieceColor;
+
+import javafx.scene.image.ImageView;
+
 public class Queen extends Piece {
 
-	Queen(Boolean isKilled, Boolean whitePiece) {
-		super(isKilled, whitePiece);
-		// TODO Auto-generated constructor stub
+
+
+	Queen(PieceColor isWhite) {
+		super(isWhite);
+		
 	}
 
 	@Override
@@ -14,14 +20,12 @@ public class Queen extends Piece {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	@Override
-	public String getName(Piece piece) {
-		String color;
-		if(piece.getwhitePiece()){
-			color = "white";
-		}else{
-			color="black";
-		}
-		return color +"Queen";
+	public boolean canMove(ChessBoard board, Spot start, Spot end) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'canMove'");
 	}
+
+
 }

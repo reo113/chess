@@ -1,40 +1,46 @@
 package com.example;
+
 import java.util.ArrayList;
 
-//Determine whether or not the Piece class should include the position of each Piece or
-//The tile class can determine that
+import com.example.Player.PieceColor;
+
 public abstract class Piece {
-	
-	protected Boolean isKilled;
-	protected Boolean whitePiece;
-	Piece(){
-		isKilled = false;
-		whitePiece = true;
+
+	protected boolean isKilled;
+	protected PieceColor color;
+
+
+	public Piece(PieceColor color) {
+		this.color = color;
+		this.isKilled = false;
 	}
-	Piece(Boolean isKilled, Boolean whitePiece) {
-		this.isKilled = isKilled;
-		this.whitePiece = whitePiece;
-	}
-	
+
 	public abstract ArrayList<Move> legalMoves(ChessBoard board, Spot start);
-	public abstract String getName(Piece piece);
-	//if the piece is White false is returned and true is returned for a Black piece
-	public Boolean getwhitePiece() {
-		return whitePiece;
+
+	public abstract boolean canMove(ChessBoard board, Spot start, Spot end);
+
+
+	public PieceColor getColor() {
+		return color;
 	}
 
-	//sets the piece color to either White(false) or Black(true)
-	public void setWhitePiece(Boolean isWhite) {
-		this.whitePiece = isWhite;
+	public void setColor(PieceColor color) {
+		this.color = color;
 	}
 
-	public Boolean getIsKilled() {
+	public boolean isKilled() {
 		return isKilled;
 	}
 
-	public void setIsKilled(Boolean isKilled) {
+	public String getImageName() {
+		String colorString = color == PieceColor.WHITE ? "white" : "black";
+		//System.out.println(colorString + getClass());
+		return colorString + getClass().getSimpleName();
+	}
+
+	public void setKilled(boolean isKilled) {
 		this.isKilled = isKilled;
 	}
 
-  
+
 }

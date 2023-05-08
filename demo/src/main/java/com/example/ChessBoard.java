@@ -2,6 +2,8 @@ package com.example;
 
 import java.io.File;
 
+import com.example.Player.PieceColor;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -15,7 +17,7 @@ public class ChessBoard extends GridPane {
     private final Color darkColor = Color.rgb(209, 139, 71);
     boolean bool = false;
     private static final Spot[][] spots = new Spot[8][8];
-    final static String IMAGE_PATH = "demo\\src\\main\\java\\com\\example\\images";
+    final static String IMAGE_PATH = "src\\main\\java\\com\\example\\images";
 
     public ChessBoard(int size) {
 
@@ -39,7 +41,7 @@ public class ChessBoard extends GridPane {
                             } else {
                                 bool = true;
                             }
-                            piece = new Rook(false, bool);
+                            piece = new Rook(bool ? PieceColor.WHITE : PieceColor.BLACK);
                             isSpotOccupied = true;
                             break;
                         case 1:
@@ -49,7 +51,7 @@ public class ChessBoard extends GridPane {
                             } else {
                                 bool = true;
                             }
-                            piece = new Knight(false, bool);
+                            piece = new Knight(bool ? PieceColor.WHITE : PieceColor.BLACK);
                             isSpotOccupied = true;
                             break;
                         case 2:
@@ -59,7 +61,7 @@ public class ChessBoard extends GridPane {
                             } else {
                                 bool = true;
                             }
-                            piece = new Bishop(false, bool);
+                            piece = new Bishop(bool ? PieceColor.WHITE : PieceColor.BLACK);
                             isSpotOccupied = true;
                             break;
                         case 3:
@@ -68,7 +70,7 @@ public class ChessBoard extends GridPane {
                             } else {
                                 bool = true;
                             }
-                            piece = new Queen(false, bool);
+                            piece = new Queen(bool ? PieceColor.WHITE : PieceColor.BLACK);
                             isSpotOccupied = true;
                             break;
                         case 4:
@@ -77,7 +79,7 @@ public class ChessBoard extends GridPane {
                             } else {
                                 bool = true;
                             }
-                            piece = new King(false, bool);
+                            piece = new King(bool ? PieceColor.WHITE : PieceColor.BLACK);
                             isSpotOccupied = true;
                             break;
                     }
@@ -87,15 +89,15 @@ public class ChessBoard extends GridPane {
                     } else {
                         bool = true;
                     }
-                    piece = new Pawn(false, bool);
+                    piece = new Pawn(bool ? PieceColor.WHITE : PieceColor.BLACK);
                     isSpotOccupied = true;
                 }
                 this.add(tile, j, i);
-                Spot spot = new Spot(piece, tile, isSpotOccupied);
+                Spot spot = new Spot(piece, tile, isSpotOccupied, this);
 
                 // Load the chess piece image
-                if (piece != null && piece.getName(piece) != null) {
-                    String imagePath = IMAGE_PATH + "\\" + piece.getName(piece) + ".png";
+                if (piece != null) {
+                    String imagePath = IMAGE_PATH + "\\" + piece.getImageName() + ".png";
                     File imageFile = new File(imagePath);
                     if (imageFile.exists()) {
                         Image image = new Image(imageFile.toURI().toString());
@@ -104,6 +106,7 @@ public class ChessBoard extends GridPane {
                         imageView.setFitHeight(40);
                         spot.getChildren().add(imageView);
                         spot.setImageView(imageView);
+
                     }
                 }
 
@@ -113,7 +116,23 @@ public class ChessBoard extends GridPane {
         }
     }
 
-    public Spot[][] getBoard() {
-        return spots;
+    public Spot getSpot(int row, int col) {
+        if (row < 0 || row >= size || col < 0 || col >= size) {
+            return null;
+        }
+        return spots[row][col];
+    }
+
+    public void setSpot(int row, int col, Spot spot) {
+        spots[row][col] = spot;
+        this.add(spot, col, row);
+    }
+
+    public void resetHighlights() {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                spots[i][j].resetColor();
+            }
+        }
     }
 }

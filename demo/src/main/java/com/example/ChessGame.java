@@ -1,5 +1,7 @@
 package com.example;
 
+import com.example.Player.PieceColor;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,7 +20,9 @@ import javafx.stage.Stage;
  */
 
  public class ChessGame extends Application {
-    
+    public static void main(String[] args) {
+        launch(args);
+    }
     final static int BOARDSIZE = 8;
     private Player player1;
     private Player player2;
@@ -42,13 +46,13 @@ import javafx.stage.Stage;
             String player1Name = mainMenu.getPlayer1NameField().getText();
             String player2Name = mainMenu.getPlayer2NameField().getText();
             
-            // Assign random colors to the players
-            boolean player1IsBlack = Math.random() < 0.5;
-            boolean player2IsBlack = !player1IsBlack;
+            //Assign random colors to the players
+            PieceColor player1Color = PieceColor.WHITE;
+            PieceColor player2Color = PieceColor.BLACK;
             
             // Create player instances with the chosen names and colors
-            player1 = new Player(player1Name, player1IsBlack);
-            player2 = new Player(player2Name, player2IsBlack);
+            player1 = new Player(player1Name, player1Color);
+            player2 = new Player(player2Name, player2Color);
             isPlayer1Turn = true;
             
             // Create HBox to hold player labels

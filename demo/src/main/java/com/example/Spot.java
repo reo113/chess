@@ -1,7 +1,11 @@
 package com.example;
 
+import java.util.ArrayList;
+
+import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -15,110 +19,107 @@ public class Spot extends StackPane {
     private boolean isSpotOccupied;
     protected Piece pieceBeingDragged;
     protected ImageView imageViewBeingDragged;
-    double X;
-    double Y;
+    private final Color lightColor = Color.rgb(255, 206, 158);
+    private final Color darkColor = Color.rgb(209, 139, 71);
+    private double X;
+    private double Y;
+    private ChessBoard board;
 
-    public Spot(Piece piece, Rectangle tile, boolean isSpotOccupied) {
+    public Spot(Piece piece, Rectangle tile, boolean isSpotOccupied, ChessBoard board) {
         this.piece = piece;
         this.tile = tile;
         this.imageView = null;
         this.isSpotOccupied = isSpotOccupied;
+        this.board = board;
 
         setOnMousePressed(e -> {
-            // only if the spot is empty will the mouse press be handled
+            board.resetHighlights(); // Reset highlights on the board
             if (isSpotOccupied) {
-                // save the current position of the piece in case the move is not valid
+                ArrayList<Move> legalMoves = piece.legalMoves(board, this);
+                for (Move move : legalMoves) {
+                    Spot destinationSpot = move.getEnd(); // Access the 'end' Spot directly
+                    destinationSpot.highlight();
+                }
                 pieceBeingDragged = piece;
                 imageViewBeingDragged = imageView;
-                toFront();
-                setCursor(Cursor.CLOSED_HAND);
+
+                this.toFront();
+                //this.setCursor(Cursor.CLOSED_HAND);
+
             }
         });
 
         setOnMouseDragged(event -> {
             if (pieceBeingDragged != null) {
-                X = event.getX() - 18;
-                Y = event.getY() - 18;
+                X = event.getX() - 25;
+                Y = event.getY() - 25;
                 imageViewBeingDragged.setTranslateX(X);
                 imageViewBeingDragged.setTranslateY(Y);
+
             }
         });
         setOnMouseReleased(event -> {
+            board.resetHighlights();
             if (pieceBeingDragged != null) {
-                Spot sourceSpot = (Spot) imageViewBeingDragged.getParent();
+                imageViewBeingDragged.setTranslateX(0);
+                imageViewBeingDragged.setTranslateY(0);
 
-                // Find the destination spot
-                Spot destinationSpot = null;
-                if (this.contains(X, Y) && !isSpotOccupied) {
-                    destinationSpot = this;
-                }
-                if (destinationSpot != null && destinationSpot.isSpotOccupied() == false) {
-                    // Move the piece to the destination spot
+                // Calculate the destination row and column based on the local coordinates
+                // within the GridPane
+                Point2D localPoint = board.sceneToLocal(event.getSceneX(), event.getSceneY());
+                int newRow = (int) Math.floor(localPoint.getY() / 50);
+                int newCol = (int) Math.floor(localPoint.getX() / 50);
+
+                Spot destinationSpot = board.getSpot(newRow, newCol);
+
+                if (destinationSpot != null && pieceBeingDragged.canMove(board, this, destinationSpot)) {
+
+                    if (destinationSpot.isSpotOccupied()) {
+                        ImageView capturedPieceImageView = destinationSpot.getImageView();
+                        destinationSpot.removeImageView();
+                        destinationSpot.getChildren().remove(capturedPieceImageView);
+                    }
+                    this.removePiece();
+                    this.getChildren().remove(imageViewBeingDragged);
+                    this.removeImageView();
+
+                    this.setOnMousePressed(null);
+                    this.setOnMouseDragged(null);
+                    this.setOnMouseReleased(null);
+
                     destinationSpot.setPiece(pieceBeingDragged);
                     destinationSpot.getChildren().add(imageViewBeingDragged);
-                    sourceSpot.removePiece();
-                    pieceBeingDragged = null;
-                } else if (destinationSpot != null && destinationSpot.isSpotOccupied() == true) {
-                    ImageView capturedPieceImageView = destinationSpot.getImageView();
-                    destinationSpot.removeImageView();
-                    getChildren().remove(capturedPieceImageView);
-                    
-                }else{
-                    // Move the piece back to the source spot
-                    imageViewBeingDragged.setTranslateX(0);
-                    imageViewBeingDragged.setTranslateY(0);
+                    destinationSpot.setImageView(imageViewBeingDragged);
+                    destinationSpot.setIsSpotOccupied(true);
+                    destinationSpot.updateEventListeners();
+                 
+
+                    board.setSpot(newRow, newCol, destinationSpot);
+                    board.setSpot(this.getRow(), this.getColumn(), this);
+
                 }
 
-              
-
+                // Reset the pieceBeingDragged
+                pieceBeingDragged = null;
+                imageViewBeingDragged = null;
                 setCursor(Cursor.DEFAULT);
+
             }
         });
-        // setOnMouseReleased(event -> {
-        // if (pieceBeingDragged != null) {
-        // Spot destinationSpot = null;
-        // if (this.contains(X, Y) && !isSpotOccupied) {
-        // destinationSpot = this;
-
-        // }
-        // if (destinationSpot != null) {
-        // // Move the Piece object to the destination Spot
-        // ImageView currentPiece = destinationSpot.getImageView();
-        // destinationSpot.setPiece(pieceBeingDragged);
-        // destinationSpot.getChildren().add(imageViewBeingDragged); // Add the
-        // ImageView to the new Spot
-        // pieceBeingDragged = null;
-        // if (currentPiece != null) {
-        // getChildren().remove(currentPiece); // Remove the ImageView of the captured
-        // // Piece from the board
-        // }
-        // } else {
-
-        // imageViewBeingDragged.setTranslateX(X);
-        // imageViewBeingDragged.setTranslateY(Y);
-        // }
-        // setCursor(Cursor.DEFAULT);
-        // }
-
-        // });
 
     }
 
+    void removePiece() {
 
-    private void removePiece() {
-        this.piece = null;
+        piece = null; // set the piece reference to null
+        setIsSpotOccupied(false);
+
     }
-
 
     private void removeImageView() {
-        this.imageView = null;
-    }
 
-    public Spot(Piece piece, Rectangle tile, ImageView imageView, boolean isSpotOccupied) {
-        this.piece = piece;
-        this.tile = tile;
-        this.imageView = imageView;
-        this.isSpotOccupied = isSpotOccupied;
+        imageView = null; // set the piece reference to null
+
     }
 
     public ImageView getImageView() {
@@ -135,7 +136,15 @@ public class Spot extends StackPane {
 
     public void setPiece(Piece piece) {
         this.piece = piece;
+        setIsSpotOccupied(piece != null);
+        // this.piece = piece;
+        // if (piece != null) {
 
+        //     System.out.println("Piece added to spot " + this.getRow() + ", " + this.getColumn());
+        // } else {
+        //     this.setIsSpotOccupied(false);
+        //     System.out.println("Piece removed from spot " + this.getRow() + ", " + this.getColumn());
+        // }
     }
 
     public Rectangle getTile() {
@@ -155,15 +164,105 @@ public class Spot extends StackPane {
         this.tile = tile;
     }
 
-    public double getTileX() {
-        return tile.getX();
+    public int getRow() {
+        return GridPane.getRowIndex(this);
     }
 
-    public double getTileY() {
-        return tile.getY();
+    public int getColumn() {
+        return GridPane.getColumnIndex(this);
     }
 
     public boolean isSpotOccupied() {
         return isSpotOccupied;
+    }
+
+    public void setIsSpotOccupied(boolean isSpotOccupied) {
+        this.isSpotOccupied = isSpotOccupied;
+    }
+
+    public void highlight() {
+        tile.setFill(Color.rgb(170, 162, 58));
+    }
+
+    public void resetColor() {
+        int row = getRow();
+        int col = getColumn();
+        tile.setFill((row + col) % 2 == 0 ? lightColor : darkColor);
+    }
+
+    public void updateEventListeners() {
+        setOnMousePressed(e -> {
+            board.resetHighlights(); // Reset highlights on the board
+            if (isSpotOccupied) {
+                ArrayList<Move> legalMoves = piece.legalMoves(board, this);
+                for (Move move : legalMoves) {
+                    Spot destinationSpot = move.getEnd(); // Access the 'end' Spot directly
+                    destinationSpot.highlight();
+                }
+                pieceBeingDragged = piece;
+                imageViewBeingDragged = imageView;
+
+                this.toFront();
+                //this.setCursor(Cursor.CLOSED_HAND);
+
+            }
+        });
+
+        setOnMouseDragged(event -> {
+            if (pieceBeingDragged != null) {
+                X = event.getX() - 25;
+                Y = event.getY() - 25;
+                imageViewBeingDragged.setTranslateX(X);
+                imageViewBeingDragged.setTranslateY(Y);
+
+            }
+        });
+        setOnMouseReleased(event -> {
+            board.resetHighlights();
+            if (pieceBeingDragged != null) {
+                imageViewBeingDragged.setTranslateX(0);
+                imageViewBeingDragged.setTranslateY(0);
+
+                // Calculate the destination row and column based on the local coordinates
+                // within the GridPane
+                Point2D localPoint = board.sceneToLocal(event.getSceneX(), event.getSceneY());
+                int newRow = (int) Math.floor(localPoint.getY() / 50);
+                int newCol = (int) Math.floor(localPoint.getX() / 50);
+
+                Spot destinationSpot = board.getSpot(newRow, newCol);
+
+                if (destinationSpot != null && pieceBeingDragged.canMove(board, this, destinationSpot)) {
+
+                    if (destinationSpot.isSpotOccupied()) {
+                        ImageView capturedPieceImageView = destinationSpot.getImageView();
+                        destinationSpot.removeImageView();
+                        destinationSpot.getChildren().remove(capturedPieceImageView);
+                    }
+                    this.removePiece();
+                    this.getChildren().remove(imageViewBeingDragged);
+                    this.removeImageView();
+
+                    this.setOnMousePressed(null);
+                    this.setOnMouseDragged(null);
+                    this.setOnMouseReleased(null);
+
+                    destinationSpot.setPiece(pieceBeingDragged);
+                    destinationSpot.getChildren().add(imageViewBeingDragged);
+                    destinationSpot.setImageView(imageViewBeingDragged);
+                    destinationSpot.setIsSpotOccupied(true);
+                    destinationSpot.updateEventListeners();
+
+                    board.setSpot(newRow, newCol, destinationSpot);
+                    board.setSpot(this.getRow(), this.getColumn(), this);
+
+                }
+
+                // Reset the pieceBeingDragged
+                pieceBeingDragged = null;
+                imageViewBeingDragged = null;
+                setCursor(Cursor.DEFAULT);
+
+            }
+        });
     }
 }

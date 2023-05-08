@@ -26,7 +26,8 @@ public class MainMenu extends VBox {
         setPrefSize(500, 500); // Set size of the VBox
 
         // Add background image
-        String imagePath = "demo\\src\\main\\java\\com\\example\\chessbg.jpg";
+        String imagePath = "src\\main\\java\\com\\example\\chessbg.jpg";
+    
         File imageFile = new File(imagePath);
         Image image = new Image(imageFile.toURI().toString());
         ImageView imageView = new ImageView(image);
