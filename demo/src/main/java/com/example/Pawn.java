@@ -58,7 +58,7 @@ public class Pawn extends Piece {
 
 	@Override
 	public boolean canMove(ChessBoard board, Spot start, Spot end) {
-		
+	
 		if (end.getPiece() != null && end.getPiece().getColor() == this.getColor()) {
 			return false; // Cannot move to a spot occupied by a piece of the same color
 		}

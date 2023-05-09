@@ -69,9 +69,9 @@ public class Rook extends Piece {
             int maxCol = Math.max(startCol, endCol);
             for (int col = minCol + 1; col < maxCol; col++) {
                 // Get the spot at the current position in the row
-                Spot intermediateSpot = board.getSpot(startRow, col);
+                Spot currenSpot = board.getSpot(startRow, col);
                 // Check if the spot is occupied by a piece of the same color as the rook
-                if (intermediateSpot.isSpotOccupied() && intermediateSpot.getPiece().getColor() == getColor()) {
+                if (currenSpot.isSpotOccupied()) {
                     return false;
                 }
             }
@@ -82,8 +82,8 @@ public class Rook extends Piece {
             int minRow = Math.min(startRow, endRow);
             int maxRow = Math.max(startRow, endRow);
             for (int row = minRow + 1; row < maxRow; row++) {
-                Spot intermediateSpot = board.getSpot(row, startCol);
-                if (intermediateSpot.isSpotOccupied() && intermediateSpot.getPiece().getColor() == getColor()) {
+                Spot currenSpot = board.getSpot(row, startCol);
+                if (currenSpot.isSpotOccupied()) {
                     return false;
                 }
             }

@@ -28,7 +28,6 @@ public class ChessGame extends Application {
     private Player player1;
     private Player player2;
     private ChessBoard board;
-    private boolean isPlayer1Turn;
 
     @Override
     public void start(Stage primaryStage) {
@@ -52,19 +51,17 @@ public class ChessGame extends Application {
             PieceColor player2Color = PieceColor.BLACK;
 
             // Create player instances with the chosen names and colors
-            player1 = new Player(player1Name, player1Color);
-            player2 = new Player(player2Name, player2Color);
-            isPlayer1Turn = true;
+            player1 = new WhitePlayer(player1Name, player1Color, true);
+            player2 = new BlackPlayer(player2Name, player2Color, false);
 
             // Create HBox to hold player labels
             HBox playerLabels = new HBox(20);
             playerLabels.setAlignment(Pos.CENTER);
-            playerLabels.getChildren().addAll(
-                    new Label(player1.getName() + " (" + (player1.isBlack() ? "Black" : "White") + ")"),
-                    new Label(player2.getName() + " (" + (player2.isBlack() ? "Black" : "White") + ")"));
+            playerLabels.getChildren().addAll(new Label(player1.getName() + " (" + "White" + ")",
+                    new Label(player2.getName() + " (" + "Black" + ")")));
 
             // Create chess board
-            board = new ChessBoard(BOARDSIZE);
+            board = new ChessBoard(BOARDSIZE,player1,player2);
 
             // Create VBox to hold player labels and chess board
             VBox gameLayout = new VBox(20);
@@ -90,9 +87,11 @@ public class ChessGame extends Application {
             StackPane.setAlignment(menuBar, Pos.TOP_CENTER);
             StackPane.setMargin(gameLayout, new Insets(25, 0, 0, 0));
 
+
             // Launch the game with the chosen players
             Scene gameScene = new Scene(gameRoot);
             primaryStage.setScene(gameScene);
+
         });
     }
 }

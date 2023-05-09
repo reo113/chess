@@ -1,6 +1,7 @@
 package com.example;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import com.example.Player.PieceColor;
 
@@ -22,11 +23,14 @@ public class ChessBoard extends GridPane {
     private static final Spot[][] spots = new Spot[8][8];
     // path to the images used for the chess pieces
     final static String IMAGE_PATH = "src\\main\\java\\com\\example\\images";
-    private PieceColor playersTurn;
-    public ChessBoard(int size) {
+    private  Player whitePlayer;
+    private  Player blackPlayer;
+
+    public ChessBoard(int size, Player whitePlayer, Player blackPlayer) {
         // set the size of the board
         this.size = size;
-        playersTurn = PieceColor.WHITE;
+        this.whitePlayer = whitePlayer;
+        this.blackPlayer = blackPlayer;
         // create the squares on the board
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -104,7 +108,7 @@ public class ChessBoard extends GridPane {
                 }
                 // add tile to the board
                 this.add(tile, j, i);
-                Spot spot = new Spot(piece, tile, isSpotOccupied, this);
+                Spot spot = new Spot(piece, tile, isSpotOccupied, this, bool ? whitePlayer : blackPlayer);
 
                 // load the piece image and add it to the spot
                 if (piece != null) {
@@ -126,6 +130,7 @@ public class ChessBoard extends GridPane {
                 this.add(spot, j, i);
             }
         }
+        this.updateBoard();
     }
 
     // function that returns a specific spot or null if out of bounds
@@ -138,8 +143,26 @@ public class ChessBoard extends GridPane {
 
     // function that sets specific spot and adds it to the board
     public void setSpot(int row, int col, Spot spot) {
+
+        ImageView oldImageView = spot.getImageView();
+
+        if (oldImageView != null) {
+            spot.getChildren().remove(oldImageView);
+        }
+
+        if (spot.getPiece() != null) {
+            String imagePath = IMAGE_PATH + "\\" + spot.getPiece().getImageName() + ".png";
+            File imageFile = new File(imagePath);
+            if (imageFile.exists()) {
+                Image image = new Image(imageFile.toURI().toString());
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(40);
+                imageView.setFitHeight(40);
+                spot.getChildren().add(imageView);
+                spot.setImageView(imageView);
+            }
+        }
         spots[row][col] = spot;
-        this.add(spot, col, row);
     }
 
     // function that resets the tile color to the default colors
@@ -151,4 +174,24 @@ public class ChessBoard extends GridPane {
         }
     }
 
+    public void updateBoard() {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                spots[i][j].setBoard(this);
+            }
+        }
+    }
+
+    public ArrayList<Player> players() {
+        ArrayList<Player> players = new ArrayList<>(2);
+        players.add(whitePlayer);
+        players.add(blackPlayer);
+        return players;
+
+    }
+    public void changeplayers(Player white,Player black) {
+            this.whitePlayer.isTurn = white.isTurn;
+            this.blackPlayer.isTurn = black.isTurn;
+            this.updateBoard();
+    }
 }
