@@ -9,11 +9,7 @@ public class BlackPlayer extends Player {
             super(name,isTurn);
             pieceColor = color;
         }
-        public BlackPlayer(Player player) {
-            super(player.name,player.isTurn);
-            pieceColor = player.getPieceColor();
-        }
-    
+   
     @Override
     public PieceColor getPieceColor() {
         return pieceColor;

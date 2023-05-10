@@ -15,9 +15,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-/**
- * JavaFX App
- */
 
 public class ChessGame extends Application {
     public static void main(String[] args) {

@@ -47,7 +47,7 @@ public class Knight extends Piece {
 
 	@Override
 	public boolean canMove(ChessBoard board, Spot start, Spot end) {
-		// TODO Auto-generated method stub
+
 		
 		 if (end.getPiece() != null && end.getPiece().getColor() == this.getColor()) {
 		     // Cannot move to a spot occupied by a piece of the same color

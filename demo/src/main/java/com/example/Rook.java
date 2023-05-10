@@ -8,7 +8,6 @@ public class Rook extends Piece {
 
     Rook(PieceColor isWhite) {
         super(isWhite);
-
     }
 
     // Returns an ArrayList of all legal moves for the rook

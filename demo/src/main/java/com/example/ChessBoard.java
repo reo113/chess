@@ -2,9 +2,7 @@ package com.example;
 
 import java.io.File;
 import java.util.ArrayList;
-
 import com.example.Player.PieceColor;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -14,17 +12,21 @@ import javafx.scene.shape.Rectangle;
 public class ChessBoard extends GridPane {
     // the size of the chess board
     private final int size;
+
     // colors used for the light and dark tiles on the board
     private final Color lightColor = Color.rgb(255, 206, 158);
     private final Color darkColor = Color.rgb(209, 139, 71);
+
     // boolean value used to alternate between white and black pieces
-    boolean bool = false;
+    boolean isPieceColor = false;
+
     // 2D array of spots that make up the board
     private static final Spot[][] spots = new Spot[8][8];
+
     // path to the images used for the chess pieces
     final static String IMAGE_PATH = "src\\main\\java\\com\\example\\images";
-    private  Player whitePlayer;
-    private  Player blackPlayer;
+    private Player whitePlayer;
+    private Player blackPlayer;
 
     public ChessBoard(int size, Player whitePlayer, Player blackPlayer) {
         // set the size of the board
@@ -51,64 +53,64 @@ public class ChessBoard extends GridPane {
                         case 0:
                         case 7:
                             if (i < 2) {
-                                bool = false;
+                                isPieceColor = false;
                             } else {
-                                bool = true;
+                                isPieceColor = true;
                             }
-                            piece = new Rook(bool ? PieceColor.WHITE : PieceColor.BLACK);
+                            piece = new Rook(isPieceColor ? PieceColor.WHITE : PieceColor.BLACK);
                             isSpotOccupied = true;
                             break;
                         case 1:
                         case 6:
                             if (i < 2) {
-                                bool = false;
+                                isPieceColor = false;
                             } else {
-                                bool = true;
+                                isPieceColor = true;
                             }
-                            piece = new Knight(bool ? PieceColor.WHITE : PieceColor.BLACK);
+                            piece = new Knight(isPieceColor ? PieceColor.WHITE : PieceColor.BLACK);
                             isSpotOccupied = true;
                             break;
                         case 2:
                         case 5:
                             if (i < 2) {
-                                bool = false;
+                                isPieceColor = false;
                             } else {
-                                bool = true;
+                                isPieceColor = true;
                             }
-                            piece = new Bishop(bool ? PieceColor.WHITE : PieceColor.BLACK);
+                            piece = new Bishop(isPieceColor ? PieceColor.WHITE : PieceColor.BLACK);
                             isSpotOccupied = true;
                             break;
                         case 3:
                             if (i < 2) {
-                                bool = false;
+                                isPieceColor = false;
                             } else {
-                                bool = true;
+                                isPieceColor = true;
                             }
-                            piece = new Queen(bool ? PieceColor.WHITE : PieceColor.BLACK);
+                            piece = new Queen(isPieceColor ? PieceColor.WHITE : PieceColor.BLACK);
                             isSpotOccupied = true;
                             break;
                         case 4:
                             if (i < 2) {
-                                bool = false;
+                                isPieceColor = false;
                             } else {
-                                bool = true;
+                                isPieceColor = true;
                             }
-                            piece = new King(bool ? PieceColor.WHITE : PieceColor.BLACK);
+                            piece = new King(isPieceColor ? PieceColor.WHITE : PieceColor.BLACK);
                             isSpotOccupied = true;
                             break;
                     }
                 } else if (i == 1 || i == 6) {
                     if (i < 2) {
-                        bool = false;
+                        isPieceColor = false;
                     } else {
-                        bool = true;
+                        isPieceColor = true;
                     }
-                    piece = new Pawn(bool ? PieceColor.WHITE : PieceColor.BLACK);
+                    piece = new Pawn(isPieceColor ? PieceColor.WHITE : PieceColor.BLACK);
                     isSpotOccupied = true;
                 }
                 // add tile to the board
                 this.add(tile, j, i);
-                Spot spot = new Spot(piece, tile, isSpotOccupied, this, bool ? whitePlayer : blackPlayer);
+                Spot spot = new Spot(piece, tile, isSpotOccupied, this, isPieceColor ? whitePlayer : blackPlayer);
 
                 // load the piece image and add it to the spot
                 if (piece != null) {
@@ -124,13 +126,12 @@ public class ChessBoard extends GridPane {
 
                     }
                 }
-                // Add the spot to the 2D array of spots
+                // add the spot to the 2d array of spots
                 spots[i][j] = spot;
                 // add spot to the board
                 this.add(spot, j, i);
             }
         }
-        this.updateBoard();
     }
 
     // function that returns a specific spot or null if out of bounds
@@ -141,43 +142,12 @@ public class ChessBoard extends GridPane {
         return spots[row][col];
     }
 
-    // function that sets specific spot and adds it to the board
-    public void setSpot(int row, int col, Spot spot) {
-
-        ImageView oldImageView = spot.getImageView();
-
-        if (oldImageView != null) {
-            spot.getChildren().remove(oldImageView);
-        }
-
-        if (spot.getPiece() != null) {
-            String imagePath = IMAGE_PATH + "\\" + spot.getPiece().getImageName() + ".png";
-            File imageFile = new File(imagePath);
-            if (imageFile.exists()) {
-                Image image = new Image(imageFile.toURI().toString());
-                ImageView imageView = new ImageView(image);
-                imageView.setFitWidth(40);
-                imageView.setFitHeight(40);
-                spot.getChildren().add(imageView);
-                spot.setImageView(imageView);
-            }
-        }
-        spots[row][col] = spot;
-    }
 
     // function that resets the tile color to the default colors
     public void resetHighlights() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 spots[i][j].resetColor();
-            }
-        }
-    }
-
-    public void updateBoard() {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                spots[i][j].setBoard(this);
             }
         }
     }
@@ -189,9 +159,10 @@ public class ChessBoard extends GridPane {
         return players;
 
     }
-    public void changeplayers(Player white,Player black) {
-            this.whitePlayer.isTurn = white.isTurn;
-            this.blackPlayer.isTurn = black.isTurn;
-            this.updateBoard();
+
+    public void changeplayers(Player white, Player black) {
+        this.whitePlayer.isTurn = white.isTurn;
+        this.blackPlayer.isTurn = black.isTurn;
+
     }
 }

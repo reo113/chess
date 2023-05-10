@@ -12,7 +12,7 @@ public class Queen extends Piece {
 	
 	@Override
 	public ArrayList<Move> legalMoves(ChessBoard board, Spot start) {
-		// TODO Auto-generated method stub
+
 		ArrayList<Move> moves = new ArrayList<>();
         int startRow = start.getRow();
         int startCol = start.getColumn();
@@ -70,7 +70,7 @@ public class Queen extends Piece {
 
 	@Override
 	public boolean canMove(ChessBoard board, Spot start, Spot end) {
-		// TODO Auto-generated method stub
+
 		if (end.isSpotOccupied() && end.getPiece().getColor() == getColor()) {
             return false;
         }
