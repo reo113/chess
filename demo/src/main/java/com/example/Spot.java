@@ -1,16 +1,22 @@
 package com.example;
 
+import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.example.Player.PieceColor;
+
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Spot extends StackPane {
+public class Spot extends StackPane implements Serializable{
 
     private Piece piece;
     private Rectangle tile;
@@ -120,9 +126,12 @@ public class Spot extends StackPane {
         });
 
         setOnMouseDragged(event -> {
+
             if (pieceBeingDragged != null) {
+
                 xCoor = event.getX() - 25;
                 yCoor = event.getY() - 25;
+
                 imageViewBeingDragged.setTranslateX(xCoor);
                 imageViewBeingDragged.setTranslateY(yCoor);
 
@@ -132,6 +141,7 @@ public class Spot extends StackPane {
 
             board.resetHighlights();
             if (pieceBeingDragged != null) {
+
                 imageViewBeingDragged.setTranslateX(0);
                 imageViewBeingDragged.setTranslateY(0);
 
@@ -149,6 +159,34 @@ public class Spot extends StackPane {
                         if (endSpot != null && pieceBeingDragged.canMove(board, this, endSpot)) {
                             if (pieceBeingDragged instanceof Pawn) {
                                 ((Pawn) pieceBeingDragged).setFirstMove(false);
+                                if (endSpot.getRow() == 0 && pieceBeingDragged.getColor() == PieceColor.WHITE) {
+                                    pieceBeingDragged = new Queen(PieceColor.WHITE);
+                                    String imagePath = ChessBoard.IMAGE_PATH + "\\" + pieceBeingDragged.getImageName()
+                                            + ".png";
+                                    File imageFile = new File(imagePath);
+                                    if (imageFile.exists()) {
+                                        Image image = new Image(imageFile.toURI().toString());
+                                        ImageView imageView = new ImageView(image);
+                                        imageView.setFitWidth(40);
+                                        imageView.setFitHeight(40);
+                                        imageViewBeingDragged.setImage(image);
+                                    }
+
+                                } else if (endSpot.getRow() == 7
+                                        && pieceBeingDragged.getColor() == PieceColor.BLACK) {
+                                    pieceBeingDragged = new Queen(PieceColor.BLACK);
+                                    String imagePath = ChessBoard.IMAGE_PATH + "\\" + pieceBeingDragged.getImageName()
+                                            + ".png";
+                                    File imageFile = new File(imagePath);
+                                    if (imageFile.exists()) {
+                                        Image image = new Image(imageFile.toURI().toString());
+                                        ImageView imageView = new ImageView(image);
+                                        imageView.setFitWidth(40);
+                                        imageView.setFitHeight(40);
+                                        imageViewBeingDragged.setImage(image);
+                                    }
+                                }
+
                             }
                             if (endSpot.isSpotOccupied()) {
                                 ImageView capturedPieceImageView = endSpot.getImageView();

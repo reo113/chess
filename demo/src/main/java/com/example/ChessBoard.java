@@ -3,6 +3,8 @@ package com.example;
 import java.io.File;
 import java.util.ArrayList;
 import com.example.Player.PieceColor;
+
+import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -12,7 +14,6 @@ import javafx.scene.shape.Rectangle;
 public class ChessBoard extends GridPane {
     // the size of the chess board
     private final int size;
-
     // colors used for the light and dark tiles on the board
     private final Color lightColor = Color.rgb(255, 206, 158);
     private final Color darkColor = Color.rgb(209, 139, 71);
@@ -21,7 +22,7 @@ public class ChessBoard extends GridPane {
     boolean isPieceColor = false;
 
     // 2D array of spots that make up the board
-    private static final Spot[][] spots = new Spot[8][8];
+    protected static Spot[][] spots = new Spot[8][8];
 
     // path to the images used for the chess pieces
     final static String IMAGE_PATH = "src\\main\\java\\com\\example\\images";
@@ -33,13 +34,14 @@ public class ChessBoard extends GridPane {
         this.size = size;
         this.whitePlayer = whitePlayer;
         this.blackPlayer = blackPlayer;
+     
         // create the squares on the board
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
 
                 // setting placement and size of the tile
                 Rectangle tile = new Rectangle(i * 50, j * 50, 50, 50);
-
+          
                 // alternates the color of the tiles
                 tile.setFill((i + j) % 2 == 0 ? lightColor : darkColor);
 

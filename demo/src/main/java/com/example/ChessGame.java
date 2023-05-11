@@ -1,20 +1,29 @@
 package com.example;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 import com.example.Player.PieceColor;
 
 import javafx.application.Application;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+// import javafx.scene.control.Labeled;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+// import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 
 public class ChessGame extends Application {
     public static void main(String[] args) {
@@ -25,7 +34,7 @@ public class ChessGame extends Application {
     private Player player1;
     private Player player2;
     private ChessBoard board;
-
+  
     @Override
     public void start(Stage primaryStage) {
         // Create main menu and add it to a new Scene
@@ -58,8 +67,8 @@ public class ChessGame extends Application {
                     new Label(player2.getName() + " (" + "Black" + ")")));
 
             // Create chess board
-            board = new ChessBoard(BOARDSIZE,player1,player2);
-
+            board = new ChessBoard(BOARDSIZE, player1, player2);
+        
             // Create VBox to hold player labels and chess board
             VBox gameLayout = new VBox(20);
             gameLayout.getChildren().addAll(playerLabels, board);
@@ -70,6 +79,8 @@ public class ChessGame extends Application {
             MenuItem saveItem = new MenuItem("Save");
             fileMenu.getItems().add(saveItem);
             saveItem.setOnAction(event -> {
+              
+
                 // include code to save the chess board
                 // output all information to an output file
                 // save who's turn it is
@@ -84,11 +95,15 @@ public class ChessGame extends Application {
             StackPane.setAlignment(menuBar, Pos.TOP_CENTER);
             StackPane.setMargin(gameLayout, new Insets(25, 0, 0, 0));
 
-
             // Launch the game with the chosen players
             Scene gameScene = new Scene(gameRoot);
+          
             primaryStage.setScene(gameScene);
-
+            
+            primaryStage.setMaxWidth(415);
+            primaryStage.setMaxHeight(498);
+            primaryStage.setMinWidth(415);
+            primaryStage.setMinHeight(498);
         });
     }
 }
