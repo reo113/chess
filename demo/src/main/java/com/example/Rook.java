@@ -157,4 +157,16 @@ public class Rook extends Piece {
         }
     }
 
+    @Override
+    public boolean isCheck(ChessBoard board, Spot start) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'isCheck'");
+    }
+
+    @Override
+    public boolean checkMate(ChessBoard board, Spot start) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'checkMate'");
+    }
+
 }

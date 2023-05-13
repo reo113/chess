@@ -11,8 +11,10 @@ import javafx.application.Application;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 // import javafx.scene.control.Labeled;
 import javafx.scene.control.Menu;
@@ -22,6 +24,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 // import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -50,6 +55,7 @@ public class ChessGame extends Application {
     private Player player1;
     private Player player2;
     private ChessBoard board;
+    private static String winningColor;
 
     /**
      * 
@@ -63,8 +69,8 @@ public class ChessGame extends Application {
      * 
      * @param primaryStage the primary stage of the application
      */
-    @Override
-    public void start(Stage primaryStage) {
+
+    public void mainGameDisplay(Stage primaryStage) {
         // Create main menu and add it to a new Scene
         MainMenu mainMenu = new MainMenu();
         Scene menuScene = new Scene(mainMenu);
@@ -81,12 +87,12 @@ public class ChessGame extends Application {
             String player2Name = mainMenu.getPlayer2NameField().getText();
 
             // Assign random colors to the players
-            PieceColor player1Color = PieceColor.WHITE;
-            PieceColor player2Color = PieceColor.BLACK;
+            // PieceColor player1Color = PieceColor.WHITE;
+            // PieceColor player2Color = PieceColor.BLACK;
 
             // Create player instances with the chosen names and colors
-            player1 = new WhitePlayer(player1Name, player1Color, true);
-            player2 = new BlackPlayer(player2Name, player2Color, false);
+            player1 = new WhitePlayer(player1Name, true);
+            player2 = new BlackPlayer(player2Name, false);
 
             // Create HBox to hold player labels
             HBox playerLabels = new HBox(20);
@@ -106,13 +112,8 @@ public class ChessGame extends Application {
             Menu fileMenu = new Menu("File");
             MenuItem saveItem = new MenuItem("Save");
             fileMenu.getItems().add(saveItem);
-            saveItem.setOnAction(event -> {
-
-                // include code to save the chess board
-                // output all information to an output file
-                // save who's turn it is
-                // save the position of the pieces
-                // And maybe save the time remaining on the timer
+            saveItem.setOnAction(evt -> {
+               
             });
             menuBar.getMenus().addAll(fileMenu);
 
@@ -133,4 +134,81 @@ public class ChessGame extends Application {
             primaryStage.setMinHeight(498);
         });
     }
+
+    public void gameOverDisplay(Stage primaryStage) {
+        // creates a game over label with a font style "Arcade Classic" and color red
+        Label gameOverLabel = new Label("Game Over!");
+        gameOverLabel.setFont(Font.font("Arcade Classic", 48));
+        gameOverLabel.setTextFill(Color.RED);
+
+        // creates a label with the winning color of the chess game
+        Label winnerLabel = new Label(winningColor + " wins");
+        winnerLabel.setFont(Font.font("Verdana", 28));
+        winnerLabel.setTextFill(Color.WHITE);
+
+        // create two buttons play again and exit
+        Button playAgain = new Button("Play Again");
+        Button exit = new Button("Exit");
+
+        // set the width of the two buttons to 75
+        playAgain.setPrefWidth(75);
+        exit.setPrefWidth(75);
+
+        // create a hbox and add the two buttons too it
+        // center the hbox, add spacing in between the two buttons,add padding around
+        // the hbox
+        HBox button = new HBox(playAgain, exit);
+        button.setAlignment(Pos.CENTER);
+        button.setSpacing(40);
+        button.setPadding(new Insets(10));
+
+        // create a vbox and add the two lables and the buttons so they appear one after
+        // another
+        // set the backround color to black and center the vbox
+        VBox vbox = new VBox(20, gameOverLabel, winnerLabel, button);
+        vbox.setStyle("-fx-background-color: black");
+        vbox.setAlignment(Pos.CENTER);
+
+        // add mouse events to change the cursor to the hand when it is entered in
+        // either of the buttons
+        // change it back to the default cursor when it leaves
+        playAgain.setOnMouseEntered(e -> {
+            playAgain.setCursor(Cursor.HAND);
+        });
+
+        playAgain.setOnMouseExited(e -> {
+            playAgain.setCursor(Cursor.DEFAULT);
+        });
+
+        exit.setOnMouseEntered(e -> {
+            exit.setCursor(Cursor.HAND);
+        });
+
+        exit.setOnMouseExited(e -> {
+            exit.setCursor(Cursor.DEFAULT);
+        });
+
+        // if the play again button is hit the game is started up again
+        playAgain.setOnAction(e -> {
+            mainGameDisplay(primaryStage);
+        });
+
+        // if the exit button is clicked the program closes
+        exit.setOnAction(e -> {
+            System.exit(0);
+        });
+
+        // creates the new scene with a width of 350 and height of 200
+        Scene scene = new Scene(vbox, 350, 200);
+
+        // displays the scene
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        mainGameDisplay(primaryStage);
+    }
+
 }

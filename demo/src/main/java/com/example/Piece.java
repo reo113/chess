@@ -1,12 +1,9 @@
 package com.example;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import com.example.Player.PieceColor;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 /**
  * 
@@ -48,6 +45,10 @@ public abstract class Piece {
 	 * @return true if the piece can move to the end spot, false otherwise
 	 */
 	public abstract boolean canMove(ChessBoard board, Spot start, Spot end);
+
+	public abstract boolean isCheck(ChessBoard board, Spot start);
+	
+	public abstract boolean checkMate(ChessBoard board, Spot start);
 
 	/**
 	 * 

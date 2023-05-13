@@ -75,6 +75,16 @@ public class King extends Piece {
 				int newRow = startRow + i;
 				int newCol = startCol + j;
 				Spot end = board.getSpot(newRow, newCol);
+				           // Check if the potential move is legal and does not put the king in check
+						   if (end != null && (!end.isSpotOccupied() || end.getPiece().getColor() != color)) {
+							// Make the potential move and check if the king is in check
+							Spot temp = start;
+							canMove(board, start, end);
+							if (!isCheck(board, start)) {
+								moves.add(new Move(start, end));
+							}
+							canMove(board, temp, end); // Undo the potential move
+						}
 
 				if (end != null && (!end.isSpotOccupied() || end.getPiece().getColor() != getColor())) {
 					moves.add(new Move(start, end));
@@ -115,5 +125,45 @@ public class King extends Piece {
 
 		// Check if the end spot is adjacent to the start spot
 		return rowDiff <= 1 && colDiff <= 1;
+	}
+	public boolean isCheck(ChessBoard board, Spot start) {
+	    int kingRow = start.getRow();
+	    int kingCol = start.getColumn();
+
+	    // Check if any opposing piece can attack the king
+	    for (int row = 0; row < ChessGame.BOARDSIZE ; row++) {
+	        for (int col = 0; col <  ChessGame.BOARDSIZE; col++) {
+	            Spot spot = board.getSpot(row, col);
+	            if (spot.isSpotOccupied() && spot.getPiece().getColor() != getColor()) {
+	                //Piece piece = spot.getPiece();
+	                ArrayList<Move> legalMoves = legalMoves(board, spot);
+	                for (Move move : legalMoves) {
+	                    if (move.getEnd().getRow() == kingRow && move.getEnd().getColumn() == kingCol) {
+	                        return true; // King is in check
+	                    }
+	                }
+	            }
+	        }
+	    }
+
+	    return false; // King is not in check
+	}
+	
+	public boolean checkMate(ChessBoard board,Spot start) {
+	
+		ArrayList<Move> legalMoves = this.legalMoves(board, start);
+		
+		//returns false if the king is not in check
+		if(isCheck(board,start) == false) {
+			return  false;
+		}
+		
+		//if the legal moves arrayList is not empty that means the king has a legal move available therefore not in checkMate
+		if(!legalMoves.isEmpty()) {
+			return false;
+		}
+		
+		//if true it is check mate
+		return true;
 	}
 }

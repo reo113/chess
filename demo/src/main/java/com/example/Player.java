@@ -7,34 +7,7 @@ package com.example;
  * tt is an abstract class that can be extended to create different types of
  * players.
  */
-public abstract class Player {
-    protected String name;
-    protected boolean isTurn;
-
-    /**
-     * 
-     * creates a new instance of the Player class with the specified name and
-     * turn.
-     * 
-     * @param name   The name of the player.
-     * @param isTurn Indicates whether it's the player's turn or not.
-     */
-    public Player(String name, boolean isTurn) {
-        this.name = name;
-        this.isTurn = isTurn;
-    }
-
-    /**
-     * 
-     * creates a new instance of the Player class with the same properties as
-     * the specified player.
-     * 
-     * @param player The player to copy.
-     */
-    public Player(Player player) {
-        this.name = player.name;
-        this.isTurn = player.isTurn;
-    }
+public interface Player {
 
     /**
      * 
@@ -42,9 +15,7 @@ public abstract class Player {
      * 
      * @return The name of the player.
      */
-    public String getName() {
-        return name;
-    }
+    public String getName();
 
     /**
      * 
@@ -52,9 +23,7 @@ public abstract class Player {
      * 
      * @return true if it's the player's turn, otherwise false.
      */
-    public boolean isTurn() {
-        return isTurn;
-    }
+    public boolean isTurn();
 
     /**
      * 
@@ -62,17 +31,12 @@ public abstract class Player {
      * 
      * @param isTurn true if it's the player's turn, otherwise false.
      */
-    public void setTurn(boolean isTurn) {
-        this.isTurn = isTurn;
-    }
-
+    public void setTurn(boolean isTurn);
     /**
      * 
      * changes the turn of the player.
      */
-    public void changeTurn() {
-        isTurn = !isTurn;
-    }
+    public void changeTurn();
 
     /**
      * 
@@ -89,5 +53,5 @@ public abstract class Player {
      * 
      * @return The color of the player's pieces.
      */
-    public abstract PieceColor getPieceColor();
+    public PieceColor getPieceColor();
 }
