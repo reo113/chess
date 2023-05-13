@@ -4,24 +4,64 @@ import java.util.ArrayList;
 
 import com.example.Player.PieceColor;
 
+/**
+ * 
+ * a class representing a king chess piece.
+ */
 public class King extends Piece {
 
-    private boolean firstMove;
-	
-	public King(PieceColor isWhite) {
-		super(isWhite);
-		        this.firstMove =true;
+	private boolean firstMove;
+
+	/**
+	 * 
+	 * constructor for the king class.
+	 * 
+	 * @param color a PieceColor enum representing the color of the king
+	 *              (either white or black)
+	 *              sets the firstMove to true
+	 */
+	public King(PieceColor color) {
+		super(color);
+		this.firstMove = true;
 	}
+
+	/**
+	 * 
+	 * returns whether or not this King piece has made its first move.(needed for
+	 * castling)
+	 * 
+	 * @return true if the King has not moved yet, false otherwise.
+	 */
 	public boolean isFirstMove() {
 		return firstMove;
 	}
 
+	/**
+	 * 
+	 * sets whether or not this King piece has made its first move.(needed for
+	 * castling)
+	 * 
+	 * @param firstMove true if the King has not moved yet, false otherwise.
+	 */
 	public void setFirstMove(boolean firstMove) {
 		this.firstMove = firstMove;
 	}
 
+	/**
+	 * 
+	 * returns a list of all legal moves for this King piece on the given board
+	 * 
+	 * starting from the given spot.
+	 * 
+	 * @param board the ChessBoard on which the King is placed.
+	 * 
+	 * @param start the starting spot of the King.
+	 * 
+	 * @return a list of all legal moves for the King.
+	 */
 	@Override
 	public ArrayList<Move> legalMoves(ChessBoard board, Spot start) {
+
 		ArrayList<Move> moves = new ArrayList<>();
 		int startRow = start.getRow();
 		int startCol = start.getColumn();
@@ -45,6 +85,20 @@ public class King extends Piece {
 		return moves;
 	}
 
+	/**
+	 * 
+	 * checks whether or not this King piece can move to the given end spot
+	 * 
+	 * on the given board starting from the given start spot.
+	 * 
+	 * @param board the ChessBoard on which the King is placed.
+	 * 
+	 * @param start the starting spot of the King.
+	 * 
+	 * @param end   the end spot for the King to move to.
+	 * 
+	 * @return true if the King can move to the end spot, false otherwise.
+	 */
 	@Override
 	public boolean canMove(ChessBoard board, Spot start, Spot end) {
 		if (end.isSpotOccupied() && end.getPiece().getColor() == getColor()) {

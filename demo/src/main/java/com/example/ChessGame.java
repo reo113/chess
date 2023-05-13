@@ -25,7 +25,23 @@ import javafx.scene.layout.VBox;
 // import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * the ChessGame class is the main class of the chess game application.
+ * 
+ * it extends the Application class and is responsible for creating the user
+ * interface
+ * 
+ * and launching the game with the chosen players.
+ */
 public class ChessGame extends Application {
+
+    /**
+     * 
+     * the main method of the ChessGame class. It launches the application.
+     * 
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
         launch(args);
     }
@@ -34,7 +50,19 @@ public class ChessGame extends Application {
     private Player player1;
     private Player player2;
     private ChessBoard board;
-  
+
+    /**
+     * 
+     * The start method of the Application class that creates the user interface.
+     * 
+     * tt creates the main menu, sets the primary stage's scene to the main menu
+     * Scene,
+     * 
+     * and launches the game with the chosen players when the start button is
+     * pressed.
+     * 
+     * @param primaryStage the primary stage of the application
+     */
     @Override
     public void start(Stage primaryStage) {
         // Create main menu and add it to a new Scene
@@ -68,7 +96,7 @@ public class ChessGame extends Application {
 
             // Create chess board
             board = new ChessBoard(BOARDSIZE, player1, player2);
-        
+
             // Create VBox to hold player labels and chess board
             VBox gameLayout = new VBox(20);
             gameLayout.getChildren().addAll(playerLabels, board);
@@ -79,7 +107,6 @@ public class ChessGame extends Application {
             MenuItem saveItem = new MenuItem("Save");
             fileMenu.getItems().add(saveItem);
             saveItem.setOnAction(event -> {
-              
 
                 // include code to save the chess board
                 // output all information to an output file
@@ -97,9 +124,9 @@ public class ChessGame extends Application {
 
             // Launch the game with the chosen players
             Scene gameScene = new Scene(gameRoot);
-          
+
             primaryStage.setScene(gameScene);
-            
+
             primaryStage.setMaxWidth(415);
             primaryStage.setMaxHeight(498);
             primaryStage.setMinWidth(415);

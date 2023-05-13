@@ -4,16 +4,41 @@ import java.util.ArrayList;
 
 import com.example.Player.PieceColor;
 
+/**
+ * 
+ *  Queen class represents a queen chess piece and extends the Piece class.
+ * 
+ * it defines the legal moves that a queen can make and checks if a move is
+ * valid.
+ */
 public class Queen extends Piece {
+   /**
+     * 
+     * constructor for the queen class.
+     * 
+     * @param color a PieceColor enum representing the color of the bishop
+     *              (either white or black)
+     */
+    public Queen(PieceColor color) {
+        super(color);
+    }
 
-	public Queen(PieceColor color) {
-	    super(color);
-	}
-	
-	@Override
-	public ArrayList<Move> legalMoves(ChessBoard board, Spot start) {
+    /**
+     * 
+     * returns a list of legal moves that the queen can make from the given start
+     * spot on the given board.
+     * 
+     * @param board the chess board on which the queen is placed
+     * 
+     * @param start the starting spot of the queen
+     * 
+     * @return an ArrayList of all legal moves that the queen can make from the
+     *         starting spot
+     */
+    @Override
+    public ArrayList<Move> legalMoves(ChessBoard board, Spot start) {
 
-		ArrayList<Move> moves = new ArrayList<>();
+        ArrayList<Move> moves = new ArrayList<>();
         int startRow = start.getRow();
         int startCol = start.getColumn();
 
@@ -42,13 +67,13 @@ public class Queen extends Piece {
                 }
             }
         }
-        
-     // Add all possible moves in the same row
+
+        // Add all possible moves in the same row
         for (int col = 0; col < 8; col++) {
             if (col != startCol) {
                 // Get the end position of the move
                 Spot end = board.getSpot(startRow, col);
-                
+
                 if (canMove(board, start, end)) {
                     Move move = new Move(start, end);
                     // Add the move to the list of legal moves
@@ -70,12 +95,25 @@ public class Queen extends Piece {
         }
 
         return moves;
-	}
+    }
 
-	@Override
-	public boolean canMove(ChessBoard board, Spot start, Spot end) {
+    /**
+     * 
+     * checks if the move from the start spot to the end spot is a valid move for
+     * the queen.
+     * 
+     * @param board the chess board on which the queen is placed
+     * 
+     * @param start the starting spot of the queen
+     * 
+     * @param end   the end spot of the queen
+     * 
+     * @return true if the move is a valid move for the queen, false otherwise
+     */
+    @Override
+    public boolean canMove(ChessBoard board, Spot start, Spot end) {
 
-		if (end.isSpotOccupied() && end.getPiece().getColor() == getColor()) {
+        if (end.isSpotOccupied() && end.getPiece().getColor() == getColor()) {
             return false;
         }
 
@@ -105,8 +143,8 @@ public class Queen extends Piece {
             }
             return true;
         }
-        
-     // Check if the end spot is in the same row or column as the start spot
+
+        // Check if the end spot is in the same row or column as the start spot
         if (startRow == endRow) {
             // Check if there are any pieces in the way of the horizontal move
             int minCol = Math.min(startCol, endCol);
@@ -127,16 +165,15 @@ public class Queen extends Piece {
             int maxRow = Math.max(startRow, endRow);
             for (int row = minRow + 1; row < maxRow; row++) {
                 Spot currentSpot = board.getSpot(row, startCol);
-                if (currentSpot.isSpotOccupied() ) {
+                if (currentSpot.isSpotOccupied()) {
                     return false;
                 }
             }
             return true;
-        } 
-        else {
+        } else {
             // The end spot is neither in the same row nor column as the start spot
             return false;
         }
 
-	}
+    }
 }

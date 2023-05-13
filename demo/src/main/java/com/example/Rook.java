@@ -4,24 +4,61 @@ import java.util.ArrayList;
 
 import com.example.Player.PieceColor;
 
+/**
+ * 
+ * The Rook class represents a chess piece of type rook. It extends the Piece
+ * class and overrides its abstract methods
+ * 
+ * to provide the specific behavior for a rook.
+ */
 public class Rook extends Piece {
 
     private boolean firstMove;
 
-    Rook(PieceColor isWhite) {
-        super(isWhite);
-        this.firstMove =true;
+    /**
+     * 
+     * constructor for the rook class.
+     * 
+     * @param color a PieceColor enum representing the color of the rook
+     *              (either white or black)
+     *              sets the firstMove to true
+     */
+    Rook(PieceColor color) {
+        super(color);
+        this.firstMove = true;
     }
-	public boolean isFirstMove() {
-		return firstMove;
-	}
 
-	public void setFirstMove(boolean firstMove) {
-		this.firstMove = firstMove;
-	}
+    /**
+     * 
+     * gets the boolean indicating whether this rook has made its first move.
+     * 
+     * @return true if the rook has not yet moved, false otherwise
+     */
+    public boolean isFirstMove() {
+        return firstMove;
+    }
 
-    // returns an ArrayList of all legal moves for the rook
-    // at the given start position on the given board
+    /**
+     * 
+     * Sets the flag indicating whether this rook has made its first move.
+     * 
+     * @param firstMove the value to set for the firstMove flag
+     */
+    public void setFirstMove(boolean firstMove) {
+        this.firstMove = firstMove;
+    }
+
+    /**
+     * 
+     * returns an ArrayList of all legal moves for the rook at the given start
+     * position on the given board.
+     * 
+     * @param board the chess board on which the rook is located
+     * 
+     * @param start the starting spot of the rook
+     * 
+     * @return an ArrayList of all legal moves for the rook
+     */
     @Override
     public ArrayList<Move> legalMoves(ChessBoard board, Spot start) {
 
@@ -63,8 +100,19 @@ public class Rook extends Piece {
         return moves;
     }
 
-    // Returns true if the rook at the given start position can legally move to the
-    // given end position on the given board
+    /**
+     * 
+     * returns true if the rook at the given start position can legally move to the
+     * given end position on the given board.
+     * 
+     * @param board the chess board on which the rook is located
+     * 
+     * @param start the starting spot of the rook
+     * 
+     * @param end   the ending spot of the move
+     * 
+     * @return true if the move is legal, false otherwise
+     */
     @Override
     public boolean canMove(ChessBoard board, Spot start, Spot end) {
         // Check if the end spot is occupied by a piece of the same color as the rook
