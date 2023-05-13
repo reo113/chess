@@ -48,11 +48,12 @@ public class Queen extends Piece {
             if (col != startCol) {
                 // Get the end position of the move
                 Spot end = board.getSpot(startRow, col);
-                // Create a Move object representing the move from the start position to the end
-                // position
-                Move move = new Move(start, end);
-                // Add the move to the list of legal moves
-                moves.add(move);
+                
+                if (canMove(board, start, end)) {
+                    Move move = new Move(start, end);
+                    // Add the move to the list of legal moves
+                    moves.add(move);
+                }
             }
         }
 
@@ -60,8 +61,11 @@ public class Queen extends Piece {
         for (int row = 0; row < 8; row++) {
             if (row != startRow) {
                 Spot end = board.getSpot(row, startCol);
-                Move move = new Move(start, end);
-                moves.add(move);
+                if (canMove(board, start, end)) {
+                    Move move = new Move(start, end);
+                    // Add the move to the list of legal moves
+                    moves.add(move);
+                }
             }
         }
 
@@ -109,9 +113,9 @@ public class Queen extends Piece {
             int maxCol = Math.max(startCol, endCol);
             for (int col = minCol + 1; col < maxCol; col++) {
                 // Get the spot at the current position in the row
-                Spot intermediateSpot = board.getSpot(startRow, col);
+                Spot currentSpot = board.getSpot(startRow, col);
                 // Check if the spot is occupied by a piece of the same color as the rook
-                if (intermediateSpot.isSpotOccupied() && intermediateSpot.getPiece().getColor() == getColor()) {
+                if (currentSpot.isSpotOccupied()) {
                     return false;
                 }
             }
@@ -122,8 +126,8 @@ public class Queen extends Piece {
             int minRow = Math.min(startRow, endRow);
             int maxRow = Math.max(startRow, endRow);
             for (int row = minRow + 1; row < maxRow; row++) {
-                Spot intermediateSpot = board.getSpot(row, startCol);
-                if (intermediateSpot.isSpotOccupied() && intermediateSpot.getPiece().getColor() == getColor()) {
+                Spot currentSpot = board.getSpot(row, startCol);
+                if (currentSpot.isSpotOccupied() ) {
                     return false;
                 }
             }

@@ -6,8 +6,18 @@ import com.example.Player.PieceColor;
 
 public class King extends Piece {
 
+    private boolean firstMove;
+	
 	public King(PieceColor isWhite) {
 		super(isWhite);
+		        this.firstMove =true;
+	}
+	public boolean isFirstMove() {
+		return firstMove;
+	}
+
+	public void setFirstMove(boolean firstMove) {
+		this.firstMove = firstMove;
 	}
 
 	@Override

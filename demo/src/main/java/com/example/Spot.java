@@ -16,7 +16,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Spot extends StackPane implements Serializable{
+public class Spot extends StackPane implements Serializable {
 
     private Piece piece;
     private Rectangle tile;
@@ -37,14 +37,6 @@ public class Spot extends StackPane implements Serializable{
         this.isSpotOccupied = isSpotOccupied;
         this.board = board;
         this.updateEventListeners(player);
-    }
-
-    public ChessBoard getBoard() {
-        return board;
-    }
-
-    public void setBoard(ChessBoard board) {
-        this.board = board;
     }
 
     public void removePiece() {
@@ -107,20 +99,21 @@ public class Spot extends StackPane implements Serializable{
     public void updateEventListeners(Player player) {
 
         setOnMousePressed(e -> {
+            if (player.isTurn()) {
+                board.resetHighlights(); // Reset highlights on the board
+                if (isSpotOccupied) {
+                    ArrayList<Move> legalMoves = piece.legalMoves(board, this);
+                    for (Move move : legalMoves) {
+                        Spot endSpot = move.getEnd(); // Access the 'end' Spot directly
+                        endSpot.highlight();
+                    }
+                    pieceBeingDragged = piece;
+                    imageViewBeingDragged = imageView;
 
-            board.resetHighlights(); // Reset highlights on the board
-            if (isSpotOccupied) {
-                ArrayList<Move> legalMoves = piece.legalMoves(board, this);
-                for (Move move : legalMoves) {
-                    Spot endSpot = move.getEnd(); // Access the 'end' Spot directly
-                    endSpot.highlight();
+                    //this.toFront();
+                    this.setCursor(Cursor.CLOSED_HAND);
+
                 }
-                pieceBeingDragged = piece;
-                imageViewBeingDragged = imageView;
-
-                this.toFront();
-                this.setCursor(Cursor.CLOSED_HAND);
-
             }
 
         });
@@ -134,7 +127,7 @@ public class Spot extends StackPane implements Serializable{
 
                 imageViewBeingDragged.setTranslateX(xCoor);
                 imageViewBeingDragged.setTranslateY(yCoor);
-
+                this.toFront();
             }
         });
         setOnMouseReleased(event -> {
@@ -153,8 +146,8 @@ public class Spot extends StackPane implements Serializable{
 
                 Spot endSpot = board.getSpot(newRow, newCol);
 
-                if (endSpot != this && this != null &&
-                        this.isSpotOccupied() && this.getPiece().getColor() == player.getPieceColor()) {
+                if (endSpot != this && this != null && this.isSpotOccupied()
+                        && this.getPiece().getColor() == player.getPieceColor()) {
                     if (player.isTurn()) {
                         if (endSpot != null && pieceBeingDragged.canMove(board, this, endSpot)) {
                             if (pieceBeingDragged instanceof Pawn) {
@@ -172,8 +165,7 @@ public class Spot extends StackPane implements Serializable{
                                         imageViewBeingDragged.setImage(image);
                                     }
 
-                                } else if (endSpot.getRow() == 7
-                                        && pieceBeingDragged.getColor() == PieceColor.BLACK) {
+                                } else if (endSpot.getRow() == 7 && pieceBeingDragged.getColor() == PieceColor.BLACK) {
                                     pieceBeingDragged = new Queen(PieceColor.BLACK);
                                     String imagePath = ChessBoard.IMAGE_PATH + "\\" + pieceBeingDragged.getImageName()
                                             + ".png";
@@ -209,13 +201,12 @@ public class Spot extends StackPane implements Serializable{
                             ArrayList<Player> players = board.players();
                             players.get(0).changeTurn();
                             players.get(1).changeTurn();
-                            board.changeplayers(players.get(0), players.get(1));
+                            //board.changeplayers(players.get(0), players.get(1));
                             endSpot.updateEventListeners(player);
                         }
 
-                    } else {
-                        return;
-                    }
+                    } 
+                 
                 }
 
                 setCursor(Cursor.DEFAULT);

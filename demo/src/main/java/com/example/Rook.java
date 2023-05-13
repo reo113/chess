@@ -6,16 +6,26 @@ import com.example.Player.PieceColor;
 
 public class Rook extends Piece {
 
+    private boolean firstMove;
+
     Rook(PieceColor isWhite) {
         super(isWhite);
+        this.firstMove =true;
     }
+	public boolean isFirstMove() {
+		return firstMove;
+	}
 
-    // Returns an ArrayList of all legal moves for the rook
+	public void setFirstMove(boolean firstMove) {
+		this.firstMove = firstMove;
+	}
+
+    // returns an ArrayList of all legal moves for the rook
     // at the given start position on the given board
     @Override
     public ArrayList<Move> legalMoves(ChessBoard board, Spot start) {
 
-        // Create an ArrayList to hold the legal moves
+        // create an ArrayList to hold the legal moves
         ArrayList<Move> moves = new ArrayList<Move>();
 
         // Get the row and column of the starting position
@@ -29,9 +39,11 @@ public class Rook extends Piece {
                 Spot end = board.getSpot(currentRow, col);
                 // Create a Move object representing the move from the start position to the end
                 // position
-                Move move = new Move(start, end);
-                // Add the move to the list of legal moves
-                moves.add(move);
+                if (canMove(board, start, end)) {
+                    Move move = new Move(start, end);
+                    // Add the move to the list of legal moves
+                    moves.add(move);
+                }
             }
         }
 
@@ -39,9 +51,13 @@ public class Rook extends Piece {
         for (int row = 0; row < 8; row++) {
             if (row != currentRow) {
                 Spot end = board.getSpot(row, currentCol);
-                Move move = new Move(start, end);
-                moves.add(move);
+                if (canMove(board, start, end)) {
+                    Move move = new Move(start, end);
+                    // Add the move to the list of legal moves
+                    moves.add(move);
+                }
             }
+
         }
         // Return the list of legal moves
         return moves;
