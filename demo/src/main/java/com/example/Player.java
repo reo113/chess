@@ -32,20 +32,12 @@ public interface Player {
      * @param isTurn true if it's the player's turn, otherwise false.
      */
     public void setTurn(boolean isTurn);
+
     /**
      * 
      * changes the turn of the player.
      */
     public void changeTurn();
-
-    /**
-     * 
-     * an enum representing the color of the player's pieces.
-     */
-    public enum PieceColor {
-        WHITE,
-        BLACK
-    }
 
     /**
      * 

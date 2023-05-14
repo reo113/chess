@@ -2,8 +2,6 @@ package com.example;
 
 import java.util.ArrayList;
 
-import com.example.Player.PieceColor;
-
 /**
  * 
  * The Rook class represents a chess piece of type rook. It extends the Piece
@@ -12,8 +10,6 @@ import com.example.Player.PieceColor;
  * to provide the specific behavior for a rook.
  */
 public class Rook extends Piece {
-
-    private boolean firstMove;
 
     /**
      * 
@@ -25,27 +21,7 @@ public class Rook extends Piece {
      */
     Rook(PieceColor color) {
         super(color);
-        this.firstMove = true;
-    }
 
-    /**
-     * 
-     * gets the boolean indicating whether this rook has made its first move.
-     * 
-     * @return true if the rook has not yet moved, false otherwise
-     */
-    public boolean isFirstMove() {
-        return firstMove;
-    }
-
-    /**
-     * 
-     * Sets the flag indicating whether this rook has made its first move.
-     * 
-     * @param firstMove the value to set for the firstMove flag
-     */
-    public void setFirstMove(boolean firstMove) {
-        this.firstMove = firstMove;
     }
 
     /**

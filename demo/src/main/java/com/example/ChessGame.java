@@ -1,33 +1,25 @@
 package com.example;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-
-import com.example.Player.PieceColor;
+import java.util.ArrayList;
 
 import javafx.application.Application;
-import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-// import javafx.scene.control.Labeled;
+
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.GridPane;
+
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.FileChooser;
-// import javafx.stage.FileChooser;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 /**
@@ -51,6 +43,9 @@ public class ChessGame extends Application {
         launch(args);
     }
 
+    /**
+     * the size of the board
+     */
     final static int BOARDSIZE = 8;
     private Player player1;
     private Player player2;
@@ -58,37 +53,27 @@ public class ChessGame extends Application {
     private static String winningColor;
 
     /**
+     * shows the main menu and launches the game with the chosen players when the
+     * start button is pressed.
      * 
-     * The start method of the Application class that creates the user interface.
-     * 
-     * tt creates the main menu, sets the primary stage's scene to the main menu
-     * Scene,
-     * 
-     * and launches the game with the chosen players when the start button is
-     * pressed.
-     * 
-     * @param primaryStage the primary stage of the application
+     * @param primaryStage the primary stage of the JavaFX application
      */
-
     public void mainGameDisplay(Stage primaryStage) {
-        // Create main menu and add it to a new Scene
+
+        // makes main menu and add it to a new Scene
         MainMenu mainMenu = new MainMenu();
         Scene menuScene = new Scene(mainMenu);
 
-        // Set the primary stage's scene to the main menu Scene
+        // set the primary stage's scene to the main menu Scene
         primaryStage.setTitle("Chess Game");
         primaryStage.setScene(menuScene);
         primaryStage.show();
 
-        // Launch the game with the chosen players when the start button is pressed
+        // launch the game with the chosen players when the start button is pressed
         mainMenu.getStartButton().setOnAction(e -> {
             // Get player names from text fields
             String player1Name = mainMenu.getPlayer1NameField().getText();
             String player2Name = mainMenu.getPlayer2NameField().getText();
-
-            // Assign random colors to the players
-            // PieceColor player1Color = PieceColor.WHITE;
-            // PieceColor player2Color = PieceColor.BLACK;
 
             // Create player instances with the chosen names and colors
             player1 = new WhitePlayer(player1Name, true);
@@ -96,10 +81,18 @@ public class ChessGame extends Application {
 
             // Create HBox to hold player labels
             HBox playerLabels = new HBox(20);
+            playerLabels.setStyle("-fx-border-color: black; -fx-border-width: 3px;");
+            playerLabels.setPadding(new Insets(5));
             playerLabels.setAlignment(Pos.CENTER);
-            playerLabels.getChildren().addAll(new Label(player1.getName() + " (" + "White" + ")",
-                    new Label(player2.getName() + " (" + "Black" + ")")));
+            // creates two player labels with their entered names and piece colors
+            Label player1Label = new Label(player1.getName() + "(White)" + "       VS ");
+            player1Label.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+            player1Label.setTextFill(Color.BLACK);
+            Label player2Label = new Label(player2.getName() + "(Black)");
+            player2Label.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+            player2Label.setTextFill(Color.BLACK);
 
+            playerLabels.getChildren().addAll(player1Label, player2Label);
             // Create chess board
             board = new ChessBoard(BOARDSIZE, player1, player2);
 
@@ -111,10 +104,14 @@ public class ChessGame extends Application {
             MenuBar menuBar = new MenuBar();
             Menu fileMenu = new Menu("File");
             MenuItem saveItem = new MenuItem("Save");
-            fileMenu.getItems().add(saveItem);
-            saveItem.setOnAction(evt -> {
-               
+            MenuItem exitItem = new Menu("Quit");
+            fileMenu.getItems().addAll(saveItem, exitItem);
+            exitItem.setOnAction(event -> {
+                gameOverDisplay(primaryStage, board);
             });
+            // saveItem.setOnAction(evt -> {
+
+            // });
             menuBar.getMenus().addAll(fileMenu);
 
             // Create StackPane to hold VBox and MenuBar
@@ -129,19 +126,34 @@ public class ChessGame extends Application {
             primaryStage.setScene(gameScene);
 
             primaryStage.setMaxWidth(415);
-            primaryStage.setMaxHeight(498);
+            primaryStage.setMaxHeight(515);
             primaryStage.setMinWidth(415);
-            primaryStage.setMinHeight(498);
+            primaryStage.setMinHeight(515);
         });
     }
 
-    public void gameOverDisplay(Stage primaryStage) {
+    /**
+     * 
+     * This class represents the display of a chess game over event, where the game
+     * has ended and the outcome is shown.
+     * 
+     * @param primaryStage the primary stage to display the scene
+     * @param board        the ChessBoard object representing the current state of
+     *                     the game
+     */
+    public void gameOverDisplay(Stage primaryStage, ChessBoard board) {
         // creates a game over label with a font style "Arcade Classic" and color red
         Label gameOverLabel = new Label("Game Over!");
         gameOverLabel.setFont(Font.font("Arcade Classic", 48));
         gameOverLabel.setTextFill(Color.RED);
 
         // creates a label with the winning color of the chess game
+        ArrayList<Player> players = board.players();
+        if (players.get(0).isTurn()) {
+            winningColor = "Black";
+        } else {
+            winningColor = "White";
+        }
         Label winnerLabel = new Label(winningColor + " wins");
         winnerLabel.setFont(Font.font("Verdana", 28));
         winnerLabel.setTextFill(Color.WHITE);
@@ -190,6 +202,7 @@ public class ChessGame extends Application {
 
         // if the play again button is hit the game is started up again
         playAgain.setOnAction(e -> {
+            primaryStage.sizeToScene();
             mainGameDisplay(primaryStage);
         });
 
@@ -206,6 +219,12 @@ public class ChessGame extends Application {
         primaryStage.show();
     }
 
+    /**
+     * 
+     * displays the initial game with the chess board and player
+     * 
+     * @param primaryStage the primary stage to display the scene
+     */
     @Override
     public void start(Stage primaryStage) {
         mainGameDisplay(primaryStage);

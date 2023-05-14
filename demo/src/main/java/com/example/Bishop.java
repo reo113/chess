@@ -2,8 +2,6 @@ package com.example;
 
 import java.util.ArrayList;
 
-import com.example.Player.PieceColor;
-
 /**
  * 
  * the Bishop class extends the Piece class and represents a bishop chess piece.

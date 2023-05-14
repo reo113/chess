@@ -2,9 +2,6 @@ package com.example;
 
 import java.io.File;
 import java.util.ArrayList;
-import com.example.Player.PieceColor;
-
-import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -30,8 +27,8 @@ public class ChessBoard extends GridPane {
     // path to the images used for the chess pieces
     final static String IMAGE_PATH = "src\\main\\java\\com\\example\\images";
 
-    private Player whitePlayer;
-    private Player blackPlayer;
+    private Player whitePlayer; // player with white pieces
+    private Player blackPlayer; // player with black pieces
 
     /**
      * creates a chess board of the specified size with the specified player.
@@ -138,7 +135,7 @@ public class ChessBoard extends GridPane {
                         spot.setImageView(imageView);
 
                     }
-                    
+
                 }
                 // add the spot to the 2d array of spots
                 spots[i][j] = spot;
@@ -187,15 +184,5 @@ public class ChessBoard extends GridPane {
         return players;
 
     }
-    /**
-     * changes the players turn.
-     *
-     * @param white the new white player
-     * @param black the new black player
-     */
-    // public void changeplayers(Player white, Player black) {
-    // this.whitePlayer.isTurn = white.isTurn;
-    // this.blackPlayer.isTurn = black.isTurn;
 
-    // }
 }

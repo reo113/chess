@@ -2,17 +2,15 @@ package com.example;
 
 import java.util.ArrayList;
 
-import com.example.Player.PieceColor;
-
 /**
  * 
- *  Queen class represents a queen chess piece and extends the Piece class.
+ * Queen class represents a queen chess piece and extends the Piece class.
  * 
  * it defines the legal moves that a queen can make and checks if a move is
  * valid.
  */
 public class Queen extends Piece {
-   /**
+    /**
      * 
      * constructor for the queen class.
      * 

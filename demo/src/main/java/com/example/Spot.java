@@ -1,12 +1,7 @@
 package com.example;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
-
-import com.example.Player.PieceColor;
-
-import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.image.Image;
@@ -21,17 +16,18 @@ import javafx.scene.shape.Rectangle;
  */
 public class Spot extends StackPane {
 
-    private Piece piece;
-    private Rectangle tile;
-    private ImageView imageView;
-    private boolean isSpotOccupied;
-    protected Piece pieceBeingDragged;
-    protected ImageView imageViewBeingDragged;
+    private Piece piece;// initial piece
+    private Rectangle tile; // initial tile
+    private ImageView imageView; // initial image
+    private boolean isSpotOccupied; // checks if the spot is occupied
+    protected Piece pieceBeingDragged; // current piece
+    protected ImageView imageViewBeingDragged; // curent image
+    // colors for the tiles
     private final Color lightColor = Color.rgb(255, 206, 158);
     private final Color darkColor = Color.rgb(209, 139, 71);
-    private double xCoor;
-    private double yCoor;
-    private ChessBoard board;
+    private double xCoor; // x position of the cursor
+    private double yCoor; // y position of the cursor
+    private ChessBoard board; // current board
 
     /**
      * Creates a new Spot object.
@@ -54,7 +50,7 @@ public class Spot extends StackPane {
     }
 
     /**
-     * Removes the piece from this spot.
+     * removes the piece from this spot.
      */
     public void removePiece() {
 
@@ -64,7 +60,7 @@ public class Spot extends StackPane {
     }
 
     /**
-     * Removes the image view from this spot.
+     * removes the image view from this spot.
      */
     public void removeImageView() {
 
@@ -73,7 +69,6 @@ public class Spot extends StackPane {
     }
 
     /**
-     * Returns the image view for this spot.
      *
      * @return The image view for this spot.
      */
@@ -91,7 +86,6 @@ public class Spot extends StackPane {
     }
 
     /**
-     * Returns the piece that occupies this spot.
      *
      * @return The piece that occupies this spot.
      */
@@ -102,7 +96,7 @@ public class Spot extends StackPane {
     /**
      * Sets the piece that occupies this spot.
      *
-     * @param piece The new piece that occupies this spot.
+     * @param piece that occupies this spot.
      */
     public void setPiece(Piece piece) {
         this.piece = piece;
@@ -111,7 +105,6 @@ public class Spot extends StackPane {
     }
 
     /**
-     * Returns the row index of this spot in the chess board.
      *
      * @return The row index of this spot in the chess board.
      */
@@ -120,7 +113,6 @@ public class Spot extends StackPane {
     }
 
     /**
-     * Returns the column index of this spot in the chess board.
      *
      * @return The column index of this spot in the chess board.
      */
@@ -129,7 +121,6 @@ public class Spot extends StackPane {
     }
 
     /**
-     * Returns whether this spot is currently occupied by a piece.
      *
      * @return True if this spot is currently occupied by a piece, false otherwise.
      */
@@ -138,9 +129,9 @@ public class Spot extends StackPane {
     }
 
     /**
-     * Sets whether this spot is currently occupied by a piece.
+     * sets whether this spot is currently occupied by a piece.
      *
-     * @param isSpotOccupied The new value indicating whether this spot is currently
+     * @param isSpotOccupied indicating whether this spot is currently
      *                       occupied by a piece.
      */
     public void setIsSpotOccupied(boolean isSpotOccupied) {
@@ -149,7 +140,7 @@ public class Spot extends StackPane {
 
     /**
      * 
-     * Changes the color of the tile to highlight color.
+     * changes the color of the tile to highlight color.
      */
     public void highlight() {
         tile.setFill(Color.rgb(170, 162, 58));
@@ -203,6 +194,7 @@ public class Spot extends StackPane {
             }
 
         });
+
         /**
          * 
          * sets the on mouse dragged event for this Spot.

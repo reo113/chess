@@ -2,8 +2,7 @@ package com.example;
 
 import java.util.ArrayList;
 
-import com.example.Player.PieceColor;
-
+// import com.example.Player.PieceColor;
 
 /**
  * 
@@ -11,7 +10,7 @@ import com.example.Player.PieceColor;
  */
 public abstract class Piece {
 
-	protected PieceColor color;
+	protected PieceColor color; // the pieces color
 
 	/**
 	 * 
@@ -47,7 +46,7 @@ public abstract class Piece {
 	public abstract boolean canMove(ChessBoard board, Spot start, Spot end);
 
 	public abstract boolean isCheck(ChessBoard board, Spot start);
-	
+
 	public abstract boolean checkMate(ChessBoard board, Spot start);
 
 	/**

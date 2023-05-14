@@ -1,7 +1,7 @@
 package com.example;
 
 import java.util.ArrayList;
-import com.example.Player.PieceColor;
+// import com.example.Player.PieceColor;
 
 /**
  * 
@@ -9,7 +9,7 @@ import com.example.Player.PieceColor;
  */
 public class Pawn extends Piece {
 
-	private boolean firstMove;
+	private boolean firstMove;// bool to check it is the pawns first move
 
 	/**
 	 * 
@@ -116,7 +116,7 @@ public class Pawn extends Piece {
 		int xEnd = end.getRow();
 		int yEnd = end.getColumn();
 
-		int yDirection = this.getColor() == Player.PieceColor.WHITE ? -1 : 1;
+		int yDirection = this.getColor() == PieceColor.WHITE ? -1 : 1;
 
 		// Move one square forward
 		if (xEnd == xStart + yDirection && yEnd == yStart) {

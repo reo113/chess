@@ -2,8 +2,6 @@ package com.example;
 
 import java.util.ArrayList;
 
-import com.example.Player.PieceColor;
-
 /**
  * 
  * The Knight class represents a chess piece of type Knight.
@@ -15,13 +13,13 @@ public class Knight extends Piece {
 	private boolean firstMove;
 
 	/**
-     * 
-     * constructor for the knight class.
-     * 
-     * @param color a PieceColor enum representing the color of the knight
-     *              (either white or black)
-	 * sets the firstMove to true
-     */
+	 * 
+	 * constructor for the knight class.
+	 * 
+	 * @param color a PieceColor enum representing the color of the knight
+	 *              (either white or black)
+	 *              sets the firstMove to true
+	 */
 	public Knight(PieceColor color) {
 		super(color);
 		this.firstMove = true;
