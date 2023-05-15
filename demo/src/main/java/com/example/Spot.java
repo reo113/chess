@@ -206,15 +206,16 @@ public class Spot extends StackPane {
          * @param event the mouse dragged event
          */
         setOnMouseDragged(event -> {
+            if (player.isTurn()) {
+                if (pieceBeingDragged != null) {
 
-            if (pieceBeingDragged != null) {
+                    xCoor = event.getX() - 25;
+                    yCoor = event.getY() - 25;
 
-                xCoor = event.getX() - 25;
-                yCoor = event.getY() - 25;
+                    imageViewBeingDragged.setTranslateX(xCoor);
+                    imageViewBeingDragged.setTranslateY(yCoor);
 
-                imageViewBeingDragged.setTranslateX(xCoor);
-                imageViewBeingDragged.setTranslateY(yCoor);
-
+                }
             }
         });
         /**
