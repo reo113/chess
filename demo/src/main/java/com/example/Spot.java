@@ -176,6 +176,7 @@ public class Spot extends StackPane {
          * @param event the mouse pressed event
          */
         setOnMousePressed(event -> {
+
             if (player.isTurn()) {
                 board.resetHighlights(); // Reset highlights on the board
                 if (isSpotOccupied) {
@@ -287,10 +288,18 @@ public class Spot extends StackPane {
                             }
                             // check if the ending spot is occupied by a piece and remove it from the
                             // board
+
                             if (endSpot.isSpotOccupied()) {
+                                // if the pice is a king we changed its isKilled value to true
+                                // and sets the gameover value to true
+                                if (endSpot.getPiece() instanceof King) {
+                                    ((King) endSpot.getPiece()).changeIsKilled();
+                                    ChessGame.isGameOver.setValue(true);
+                                }
                                 ImageView capturedPieceImageView = endSpot.getImageView();
                                 endSpot.removeImageView();
                                 endSpot.getChildren().remove(capturedPieceImageView);
+
                             }
                             // remove the piece from the current spot
                             this.removePiece();
@@ -312,7 +321,7 @@ public class Spot extends StackPane {
                             // change both players turn
                             players.get(0).changeTurn();
                             players.get(1).changeTurn();
-                            // board.changeplayers(players.get(0), players.get(1));
+
                             // update the event listeners for the ending spot.
                             endSpot.updateEventListeners(player);
                         }

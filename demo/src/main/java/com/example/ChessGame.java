@@ -3,6 +3,8 @@ package com.example;
 import java.util.ArrayList;
 
 import javafx.application.Application;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -43,14 +45,13 @@ public class ChessGame extends Application {
         launch(args);
     }
 
-    /**
-     * the size of the board
-     */
     final static int BOARDSIZE = 8;
     private Player player1;
     private Player player2;
     private ChessBoard board;
     private static String winningColor;
+    protected static BooleanProperty isGameOver = new SimpleBooleanProperty(false);// used to keep track of whether the
+                                                                                   // game is over or not.
 
     /**
      * shows the main menu and launches the game with the chosen players when the
@@ -95,7 +96,14 @@ public class ChessGame extends Application {
             playerLabels.getChildren().addAll(player1Label, player2Label);
             // Create chess board
             board = new ChessBoard(BOARDSIZE, player1, player2);
-
+            // Listen for changes to the isKilled property of the King piece
+            isGameOver.addListener((obs, oldVal, newVal) -> {
+                if (newVal) {
+                    // Show the end game scene
+                    gameOverDisplay(primaryStage, board);
+                    isGameOver.setValue(oldVal);
+                }
+            });
             // Create VBox to hold player labels and chess board
             VBox gameLayout = new VBox(20);
             gameLayout.getChildren().addAll(playerLabels, board);
@@ -146,13 +154,23 @@ public class ChessGame extends Application {
         Label gameOverLabel = new Label("Game Over!");
         gameOverLabel.setFont(Font.font("Arcade Classic", 48));
         gameOverLabel.setTextFill(Color.RED);
+        if (isGameOver.getValue() == true) {
 
-        // creates a label with the winning color of the chess game
-        ArrayList<Player> players = board.players();
-        if (players.get(0).isTurn()) {
-            winningColor = "Black";
+            // creates a label with the winning color of the chess game
+            ArrayList<Player> players = board.players();
+            if (players.get(0).isTurn()) {
+                winningColor = "White";
+            } else {
+                winningColor = "Black";
+            }
         } else {
-            winningColor = "White";
+            // creates a label with the winning color of the chess game
+            ArrayList<Player> players = board.players();
+            if (players.get(0).isTurn()) {
+                winningColor = "Black";
+            } else {
+                winningColor = "White";
+            }
         }
         Label winnerLabel = new Label(winningColor + " wins");
         winnerLabel.setFont(Font.font("Verdana", 28));
