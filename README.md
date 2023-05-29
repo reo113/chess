@@ -1,6 +1,7 @@
 # Chess Game with JavaFX
 
-#NOTE This project is not fully compete missing the appropriate check and checkmate functionality. 
+# NOTE This project is not fully compete missing the appropriate check and checkmate functionality. 
+
 This project is an implementation of a chess game using JavaFX. It provides a graphical user interface (GUI) for playing chess against another human player. The game follows the standard rules of chess and includes features such as move validation, checkmate detection
 
 ## Project Structure
